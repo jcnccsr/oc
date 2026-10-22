@@ -29,7 +29,7 @@ export function getEventMessages(event) {
     `🕔 ${event.time}`,
     `📍 ${location?.name ?? event.location}`,
     ...(location ? [`${location.map}`] : event.map ? [event.map] : []),
-    `🔗 ${getEventHref(event.link)}`,
+    `\n\nReserve your spot here:\n\n🔗 ${getEventHref(event.link)}`,
   ].join("\n");
 
   return [
@@ -41,7 +41,7 @@ export function getEventMessages(event) {
     {
       key: "announcement2",
       label: "2-day event announcement",
-      text: `${event.name} is just 2 days away! We hope you can join us.\n\n${details}`,
+      text: `🌅 A little reminder\n\nOur ${event.name} is happening this ${event.day}.\n\nJoin us in the stillness of the desert for an evening of cacao, meditation, reflection, heartfelt conversations, and a sunset gathering around the bonfire.\n\n${details}`,
     },
     {
       key: "invitation",

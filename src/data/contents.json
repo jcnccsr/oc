@@ -1,0 +1,54 @@
+{
+  "events": [
+    {
+      "name": "Full Moon Cacao Ceremony",
+      "date": "2026-10-24",
+      "location": "Al Khatam Desert",
+      "time": "5:00 PM",
+      "link": "desert-cacao-ceremony"
+    },
+    {
+      "name": "Sound Healing Experience",
+      "date": "2026-10-26",
+      "location": "NHMAD",
+      "time": "8:00 PM",
+      "link": "sound-meditation"
+    },
+    {
+      "name": "Morning Yoga Flow",
+      "date": "2026-11-03",
+      "location": "NHMAD",
+      "time": "8:00 AM",
+      "link": "morning-yoga-flow"
+    },
+    {
+      "name": "Sound Meditation Experience",
+      "date": "2026-11-24",
+      "location": "NHMAD",
+      "time": "7:00 PM",
+      "link": "sound-meditation-nhmad"
+    }
+  ],
+  "companies": [
+    {
+      "name": "Etisalat",
+      "link": "",
+      "icon": "🏢"
+    },
+    {
+      "name": "ADCB",
+      "link": "",
+      "icon": "🏢"
+    },
+    {
+      "name": "Adobe",
+      "link": "",
+      "icon": "🏢"
+    },
+    {
+      "name": "ADNOC",
+      "link": "",
+      "icon": "🏢"
+    }
+  ]
+}

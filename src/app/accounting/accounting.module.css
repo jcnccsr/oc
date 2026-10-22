@@ -1,0 +1,84 @@
+.main {
+  width: 100%;
+  max-width: 1240px;
+  padding: 2rem;
+}
+
+.accounting {
+  width: 100%;
+}
+
+.eyebrow {
+  color: var(--hue-rouge);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.accounting h2 {
+  margin-bottom: 0.5rem;
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+
+.description {
+  margin-bottom: 1.5rem;
+  color: color-mix(in srgb, var(--foreground) 75%, var(--background));
+}
+
+.companyList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: 0.75rem;
+}
+
+.company {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-height: 6rem;
+  padding: 1rem;
+  border: 1px solid var(--hue-beige);
+  border-radius: 0.5rem;
+  background: color-mix(in srgb, var(--hue-beige) 35%, var(--background));
+}
+
+.icon {
+  display: grid;
+  flex: 0 0 3rem;
+  width: 3rem;
+  height: 3rem;
+  place-items: center;
+  border: 1px solid var(--hue-sauge);
+  border-radius: 50%;
+  background: var(--background);
+  font-size: 1.4rem;
+}
+
+.companyDetails {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 0.2rem;
+}
+
+.companyName {
+  font-weight: 700;
+}
+
+.company a {
+  color: var(--hue-sauge);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.placeholder {
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+@media (max-width: 480px) {
+  .main {
+    padding: 1.25rem;
+  }
+}

@@ -1,0 +1,27 @@
+{
+	"website": {
+		"name": "OC Workbench",
+		"description": "An app for making and managing tasks at OC.",
+		"url": "https://oc.jccesar.com",
+		"language": "en",
+		"locale": "en_US",
+		"logo": "logo.svg",
+		"favicon": "favicon.ico"
+	},
+	"author": {
+    "name": "Julius Cinco Cesar",
+		"email": "hello@jccesar.com",
+    "website": "https://jccesar.com",
+    "handle": "@jcnccsr"
+	},
+	"social": {
+		"twitter": "",
+		"instagram": "",
+		"linkedin": ""
+	},
+	"seo": {
+		"titleTemplate": "%s | OC Workbench",
+		"defaultTitle": "OC Workbench",
+		"defaultDescription": "An app for making and managing tasks at OC."
+	}
+}

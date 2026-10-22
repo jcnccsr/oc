@@ -1,0 +1,8 @@
+.footer {
+  margin: 1rem auto;
+  font-size: small;
+}
+.footer p span {
+  display: inline-block;
+  transform: scaleX(-1);
+}

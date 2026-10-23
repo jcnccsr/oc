@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import CopyMessageButton from "@/components/CopyMessageButton";
+import EventMessageComposer from "@/components/EventMessageComposer";
 import contents from "@/data/contents.json";
-import { getEventHref, getEventMessages } from "@/utils/eventMessages";
+import { getEventHref, messageTypes } from "@/utils/eventMessages";
 import styles from "./Calendar.module.css";
 
 const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -56,11 +56,12 @@ function EventItem({ item }) {
   const { event, kind } = item;
   const isEvent = kind === "event";
   const reminder = kind === "reminder-10" ? "10 days before" : "2 days before";
-  const messages = getEventMessages(event).filter((message) => {
-    if (kind === "reminder-10") return message.key === "announcement10";
-    if (kind === "reminder-2") return message.key === "announcement2";
-    return message.key === "invitation" || message.key === "personalReminder";
-  });
+  const messageKeys = {
+    "reminder-10": ["announcement10"],
+    "reminder-2": ["announcement2"],
+    event: ["invitation", "personalReminder"],
+  }[kind];
+  const availableMessages = messageTypes.filter((message) => messageKeys.includes(message.key));
 
   return (
     <div className={`${styles.eventItem} ${isEvent ? styles.eventItemMain : styles.eventItemReminder}`}>
@@ -78,16 +79,7 @@ function EventItem({ item }) {
           <span>{event.name}</span>
         </>
       )}
-      <span className={styles.icons} aria-label={`Copy messages for ${event.name}`}>
-        {messages.map((message) => (
-          <CopyMessageButton
-            key={message.key}
-            iconKey={message.key}
-            label={message.label}
-            text={message.text}
-          />
-        ))}
-      </span>
+      <EventMessageComposer event={event} availableMessages={availableMessages} />
     </div>
   );
 }

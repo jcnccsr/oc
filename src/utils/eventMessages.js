@@ -1,12 +1,45 @@
 const eventUrl = "https://www.opencircleyoga.org/event/";
-const locationDetails = {
+
+export const messageTypes = [
+  {
+    key: "announcement10",
+    label: "10-day announcement",
+    title: "🌿 Save the date",
+    message: (name) => `Our ${name} is coming up in 10 days. We'd love to have you join us.`,
+  },
+  {
+    key: "announcement2",
+    label: "2-day announcement",
+    title: "🌅 A little reminder",
+    message: (name, weekday) => `Our ${name} is happening this ${weekday}.`,
+  },
+  {
+    key: "invitation",
+    label: "Personal invitation",
+    title: "💌 You're invited",
+    message: (name) => `Hi! I'd love to invite you to ${name}. It would be wonderful to have you there!`,
+  },
+  {
+    key: "personalReminder",
+    label: "Personal participant message",
+    title: "💛 A note for you",
+    message: (name) => `Hi! Just a personal reminder about ${name}. I hope you can make it.`,
+  },
+];
+
+export const locationOptions = {
   Studio: {
+    label: "Studio",
     name: "Open Circle Yoga Studio",
     map: "https://maps.app.goo.gl/iLQmYwap9vKjbR3v5",
   },
   NHMAD: {
+    label: "NHMAD",
     name: "Natural History Museum Abu Dhabi",
     map: "https://maps.app.goo.gl/jkDh6ZsuFBzSN1xU9",
+  },
+  custom: {
+    label: "Other location",
   },
 };
 
@@ -17,41 +50,88 @@ export function getEventHref(link) {
   return `${eventUrl}${path}`;
 }
 
-export function getEventMessages(event) {
+export function isValidEventDate(value) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  const [year, month, day] = value.split("-").map(Number);
+  return formatDateInput(new Date(year, month - 1, day)) === value;
+}
+
+export function getMessageDraft(event, messageType) {
+  const type = messageTypes.find((item) => item.key === messageType);
+  if (!type) {
+    throw new Error(`Unknown event message type: ${messageType}`);
+  }
+
   const [year, month, day] = event.date.split("-").map(Number);
+  const date = new Date(year, month - 1, day);
+  if (formatDateInput(date) !== event.date) {
+    throw new Error(`Invalid event date: ${event.date}`);
+  }
+  const weekday = new Intl.DateTimeFormat("en", { weekday: "long" }).format(date);
+
+  return {
+    title: type.title,
+    message: type.message(event.name, weekday),
+    name: event.name,
+    date: event.date,
+    time: event.time,
+    locationType: Object.hasOwn(locationOptions, event.location) ? event.location : "custom",
+    location: event.location,
+    additionalDetails: event.details ?? "",
+    link: getEventHref(event.link),
+    signature: "From Sundar & Elena",
+  };
+}
+
+export function generateEventMessage(messageType, fields) {
+  const type = messageTypes.find((item) => item.key === messageType);
+  if (!type) {
+    throw new Error(`Unknown event message type: ${messageType}`);
+  }
+
+  const [year, month, day] = fields.date.split("-").map(Number);
+  const date = new Date(year, month - 1, day);
+  if (formatDateInput(date) !== fields.date) {
+    throw new Error(`Invalid event date: ${fields.date}`);
+  }
   const formattedDate = new Intl.DateTimeFormat("en", {
-    dateStyle: "long",
-  }).format(new Date(year, month - 1, day));
-  const location = locationDetails[event.location];
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+  }).format(date);
+  const location = locationOptions[fields.locationType];
+  if (!location) {
+    throw new Error(`Unknown event location type: ${fields.locationType}`);
+  }
+  const locationName = fields.locationType === "custom" ? fields.location : location.name;
+  const href = getEventHref(fields.link);
   const details = [
-    `Event: ${event.name}`,
+    fields.name.trim(),
     `📅 ${formattedDate}`,
-    `🕔 ${event.time}`,
-    `📍 ${location?.name ?? event.location}`,
-    ...(location ? [`${location.map}`] : event.map ? [event.map] : []),
-    `\n\nReserve your spot here:\n\n🔗 ${getEventHref(event.link)}`,
-  ].join("\n");
+    `🕔 ${fields.time.trim()}`,
+    `📍 ${locationName.trim()}`,
+    location.map,
+    fields.additionalDetails.trim(),
+  ].filter(Boolean);
 
   return [
-    {
-      key: "announcement10",
-      label: "10-day event announcement",
-      text: `Join us in 10 days for ${event.name}!\n\n${details}`,
-    },
-    {
-      key: "announcement2",
-      label: "2-day event announcement",
-      text: `🌅 A little reminder\n\nOur ${event.name} is happening this ${event.day}.\n\nJoin us in the stillness of the desert for an evening of cacao, meditation, reflection, heartfelt conversations, and a sunset gathering around the bonfire.\n\n${details}`,
-    },
-    {
-      key: "invitation",
-      label: "personal event invitation",
-      text: `Hi !\n\n I'd love to invite you to ${event.name}. It would be wonderful to have you there!\n\n${details}`,
-    },
-    {
-      key: "personalReminder",
-      label: "personal event reminder",
-      text: `Hi !\n\n Just a reminder about the upcoming ${event.name}. I hope to see you there!\n\n${details}`,
-    },
-  ];
+    fields.title.trim(),
+    "",
+    fields.message.trim(),
+    "",
+    details.join("\n"),
+    "",
+    "🔗 Reserve your spot here:",
+    "",
+    href,
+    "",
+    fields.signature.trim(),
+  ].join("\n");
+}
+
+function formatDateInput(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
 }

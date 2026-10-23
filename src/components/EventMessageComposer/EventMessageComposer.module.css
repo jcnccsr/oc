@@ -1,0 +1,186 @@
+.messageButtons {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.25rem;
+  width: 100%;
+}
+
+.messageButton {
+  display: grid;
+  width: 100%;
+  aspect-ratio: 1;
+  place-items: center;
+  padding: 0.15rem;
+  border: 1px solid var(--hue-sauge);
+  border-radius: 50%;
+  background: var(--background);
+}
+
+.messageButton img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.messageButton:hover,
+.messageButton:focus-visible {
+  outline: 2px solid var(--hue-sauge);
+  outline-offset: 2px;
+}
+
+.dialog {
+  position: fixed;
+  inset: 50% auto auto 50%;
+  width: min(46rem, calc(100vw - 2rem));
+  max-width: none;
+  max-height: min(90vh, 56rem);
+  padding: 0;
+  overflow: auto;
+  transform: translate(-50%, -50%);
+  border: 1px solid var(--hue-beige);
+  border-radius: 0.75rem;
+  color: var(--foreground);
+  background: var(--background);
+}
+
+.dialog::backdrop {
+  background: color-mix(in srgb, var(--hue-noire) 55%, transparent);
+}
+
+.composer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: clamp(1rem, 4vw, 2rem);
+}
+
+.dialogHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.eyebrow {
+  color: var(--hue-rouge);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.dialogHeader h2 {
+  font-size: 1.75rem;
+}
+
+.closeButton {
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 1px solid var(--hue-beige);
+  border-radius: 50%;
+  background: var(--background);
+  font-size: 1.5rem;
+}
+
+.typeButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.typeButtons button {
+  padding: 0.4rem 0.65rem;
+  border: 1px solid var(--hue-beige);
+  border-radius: 2rem;
+  background: var(--background);
+  font-size: 0.8rem;
+}
+
+.typeButtons .selectedType {
+  border-color: var(--hue-sauge);
+  background: color-mix(in srgb, var(--hue-beige) 60%, var(--background));
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.form label,
+.previewLabel {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.fieldRow {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.form input,
+.form textarea,
+.form select,
+.preview {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid var(--hue-beige);
+  border-radius: 0.35rem;
+  color: var(--foreground);
+  background: var(--background);
+  font-family: var(--font-dm-sans), sans-serif;
+  font-size: 0.85rem;
+  font-weight: 400;
+}
+
+.validationMessage {
+  padding: 0.6rem;
+  border: 1px solid var(--hue-beige);
+  border-radius: 0.35rem;
+  color: var(--hue-rouge);
+  font-size: 0.8rem;
+  font-weight: 400;
+}
+
+.form textarea,
+.preview {
+  resize: vertical;
+}
+
+.preview {
+  min-height: 14rem;
+  white-space: pre-wrap;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 2.5rem;
+  font-size: 0.8rem;
+}
+
+.copyButton {
+  padding: 0.6rem 1rem;
+  border: 1px solid var(--hue-sauge);
+  border-radius: 2rem;
+  color: var(--background);
+  background: var(--hue-sauge);
+  font-weight: 700;
+}
+
+.copyButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+@media (max-width: 480px) {
+  .fieldRow {
+    flex-direction: column;
+  }
+}

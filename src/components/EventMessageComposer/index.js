@@ -12,6 +12,8 @@ import {
   isValidEventDate,
   locationOptions,
   messageTypes,
+  titleIcons,
+  titleOptions,
 } from "@/utils/eventMessages";
 import styles from "./EventMessageComposer.module.css";
 
@@ -25,9 +27,12 @@ const messageIcons = {
 export default function EventMessageComposer({ event, availableMessages }) {
   const dialogRef = useRef(null);
   const headingId = useId();
+  const titleInputId = useId();
+  const titleOptionsId = useId();
   const [selectedType, setSelectedType] = useState(null);
   const [fields, setFields] = useState(null);
   const [copyStatus, setCopyStatus] = useState("");
+  const [titleOptionsOpen, setTitleOptionsOpen] = useState(false);
   const hasValidDate = fields?.date && isValidEventDate(fields.date);
   const generatedMessage = selectedType && hasValidDate
     ? generateEventMessage(selectedType, fields)
@@ -42,6 +47,29 @@ export default function EventMessageComposer({ event, availableMessages }) {
 
   function updateField(field, value) {
     setFields((current) => ({ ...current, [field]: value }));
+  }
+
+  function handleTitleKeyDown(event) {
+    if (event.key === "Escape") {
+      setTitleOptionsOpen(false);
+    } else if ((event.key === "ArrowDown" || event.key === "ArrowUp") && titleOptionsOpen) {
+      event.preventDefault();
+      const options = event.currentTarget.nextElementSibling?.querySelectorAll("button");
+      const option = event.key === "ArrowDown" ? options?.[0] : options?.[options.length - 1];
+      option?.focus();
+    }
+  }
+
+  function handleTitleOptionKeyDown(event) {
+    if (event.key !== "ArrowDown" && event.key !== "ArrowUp") {
+      return;
+    }
+
+    event.preventDefault();
+    const options = Array.from(event.currentTarget.parentElement.querySelectorAll("button"));
+    const currentIndex = options.indexOf(event.currentTarget);
+    const nextIndex = currentIndex + (event.key === "ArrowDown" ? 1 : -1);
+    options[nextIndex]?.focus();
   }
 
   async function copyMessage() {
@@ -117,10 +145,64 @@ export default function EventMessageComposer({ event, availableMessages }) {
             </div>
 
             <div className={styles.form}>
-              <label>
-                Title
-                <input value={fields.title} onChange={(e) => updateField("title", e.target.value)} />
-              </label>
+              <div className={styles.fieldRow}>
+                <select
+                  className={styles.iconSelect}
+                  aria-label="Title icon"
+                  value={fields.icon}
+                  onChange={(e) => updateField("icon", e.target.value)}
+                >
+                  {titleIcons.map((icon) => (
+                    <option key={icon.value} value={icon.value}>{icon.value}</option>
+                  ))}
+                </select>
+                <div className={styles.titleField}>
+                  <label htmlFor={titleInputId}>Title</label>
+                  <div
+                    className={styles.titleInputWrapper}
+                    onBlur={(e) => {
+                      if (!e.currentTarget.contains(e.relatedTarget)) {
+                        setTitleOptionsOpen(false);
+                      }
+                    }}
+                  >
+                    <input
+                      id={titleInputId}
+                      role="combobox"
+                      aria-autocomplete="list"
+                      aria-controls={titleOptionsId}
+                      aria-expanded={titleOptionsOpen}
+                      value={fields.title}
+                      onChange={(e) => {
+                        updateField("title", e.target.value);
+                        setTitleOptionsOpen(true);
+                      }}
+                      onFocus={() => setTitleOptionsOpen(true)}
+                      onClick={() => setTitleOptionsOpen(true)}
+                      onKeyDown={handleTitleKeyDown}
+                    />
+                    {titleOptionsOpen && (
+                      <div className={styles.titleOptions} id={titleOptionsId} role="listbox">
+                        {titleOptions.map((title) => (
+                          <button
+                            aria-selected={fields.title === title.value}
+                            key={title.value}
+                            role="option"
+                            type="button"
+                            onKeyDown={handleTitleOptionKeyDown}
+                            onClick={() => {
+                              updateField("title", title.value);
+                              setTitleOptionsOpen(false);
+                            }}
+                          >
+                            {title.label}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
               <label>
                 Message
                 <textarea

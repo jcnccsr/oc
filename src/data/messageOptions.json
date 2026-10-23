@@ -1,0 +1,22 @@
+{
+  "icons": [
+    { "value": "🌿", "defaultFor": "announcement10" },
+    { "value": "🪷", "defaultFor": "announcement2" },
+    { "value": "🎉", "defaultFor": "invitation" },
+    { "value": "📬", "defaultFor": "personalReminder" },
+    { "value": "✨", "defaultFor": "stars" },
+    { "value": "💌", "defaultFor": "heart" },
+    { "value": "🔔", "defaultFor": "bell" },
+    { "value": "🦕", "defaultFor": "brachiosaur" },
+    { "value": "🦖", "defaultFor": "tyrannosaurus" },
+    { "value": "🧘", "defaultFor": "lotusorange" },
+    { "value": "🧘‍♀️", "defaultFor": "lotusgrais" },
+    { "value": "🧘‍♂️", "defaultFor": "lotusbleu" }
+  ],
+  "titles": [
+    { "label": "Save the date", "value": "Save the date", "defaultFor": "announcement10" },
+    { "label": "A little reminder", "value": "A little reminder", "defaultFor": "announcement2" },
+    { "label": "You're invited", "value": "You're invited", "defaultFor": "invitation" },
+    { "label": "A note for you", "value": "A note for you", "defaultFor": "personalReminder" }
+  ]
+}

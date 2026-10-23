@@ -1,31 +1,32 @@
+import messageOptions from "@/data/messageOptions.json";
+
 const eventUrl = "https://www.opencircleyoga.org/event/";
 
 export const messageTypes = [
   {
     key: "announcement10",
     label: "Pre-10-Day",
-    title: "🌿 Save the date",
     message: (name) => `Our ${name} is coming up in 10 days. We'd love to have you join us.`,
   },
   {
     key: "announcement2",
     label: "Pre-2-Day",
-    title: "🌅 A little reminder",
     message: (name, weekday) => `Our ${name} is happening this ${weekday}.`,
   },
   {
     key: "invitation",
     label: "Invitation",
-    title: "💌 You're invited",
     message: (name) => `Hi! I'd love to invite you to ${name}. It would be wonderful to have you there!`,
   },
   {
     key: "personalReminder",
     label: "Personal Message",
-    title: "💛 A note for you",
     message: (name) => `Hi! Just a personal reminder about ${name}. I hope you can make it.`,
   },
 ];
+
+export const titleIcons = messageOptions.icons;
+export const titleOptions = messageOptions.titles;
 
 export const locationOptions = {
   Studio: {
@@ -42,6 +43,14 @@ export const locationOptions = {
     label: "Other location",
   },
 };
+
+function getDefaultOption(options, messageType) {
+  const option = options.find((item) => item.defaultFor === messageType);
+  if (!option) {
+    throw new Error(`Missing default message option for: ${messageType}`);
+  }
+  return option.value;
+}
 
 export function getEventHref(link) {
   const path = link
@@ -70,7 +79,8 @@ export function getMessageDraft(event, messageType) {
   const weekday = new Intl.DateTimeFormat("en", { weekday: "long" }).format(date);
 
   return {
-    title: type.title,
+    icon: getDefaultOption(titleIcons, messageType),
+    title: getDefaultOption(titleOptions, messageType),
     message: type.message(event.name, weekday),
     name: event.name,
     date: event.date,
@@ -113,9 +123,10 @@ export function generateEventMessage(messageType, fields) {
     location.map,
     fields.additionalDetails.trim(),
   ].filter(Boolean);
+  const title = [fields.icon, fields.title.trim()].filter(Boolean).join(" ");
 
   return [
-    fields.title.trim(),
+    title,
     "",
     fields.message.trim(),
     "",

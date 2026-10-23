@@ -4,10 +4,6 @@
     "title": "Events calendar",
     "eyebrow": "Open Circle Yoga",
     "emptyMessage": "No events have been added yet.",
-    "legend": {
-      "event": "Event",
-      "reminder": "Reminder"
-    },
     "weekStartsOn": 1,
     "weekdays": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
     "reminders": [
@@ -101,28 +97,48 @@
       "date": "2026-10-24",
       "location": "Al Khatam Desert",
       "time": "5:00 PM",
-      "link": "desert-cacao-ceremony"
+      "link": "desert-cacao-ceremony",
+      "facilitator": "Sundar & Elena"
     },
     {
       "name": "Sound Healing Experience",
       "date": "2026-10-26",
       "location": "NHMAD",
       "time": "8:00 PM",
-      "link": "sound-meditation"
+      "link": "sound-meditation",
+      "facilitator": "Elena"
     },
     {
       "name": "Morning Yoga Flow",
       "date": "2026-11-03",
       "location": "NHMAD",
       "time": "8:00 AM",
-      "link": "morning-yoga-flow"
+      "link": "morning-yoga-flow",
+      "facilitator": "Elena"
+    },
+    {
+      "name": "New Moon | Conscious Movement & Dance",
+      "date": "2026-11-07",
+      "location": "Studio",
+      "time": "8:00 AM",
+      "link": "morning-yoga-flow",
+      "facilitator": "Sundar and Saoussan"
+    },
+    {
+      "name": "Morning Yoga Flow",
+      "date": "2026-11-21",
+      "location": "Al Khatam Desert",
+      "time": "5:00 PM",
+      "link": "morning-yoga-flow",
+      "facilitator": "Sundar and Nacho"
     },
     {
       "name": "Sound Meditation Experience",
       "date": "2026-11-24",
       "location": "NHMAD",
       "time": "7:00 PM",
-      "link": "sound-meditation-nhmad"
+      "link": "sound-meditation-nhmad",
+      "facilitator": "Elena"
     }
   ],
   "companies": [

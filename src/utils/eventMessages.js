@@ -55,7 +55,9 @@ export function getMessageDraft(event, messageType) {
     location: event.location,
     additionalDetails: event.details ?? "",
     link: getEventHref(event.link),
-    signature: calendar.defaultSignature,
+    signature: event.facilitator
+      ? `From ${event.facilitator}`
+      : calendar.defaultSignature,
   };
 }
 

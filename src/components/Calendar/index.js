@@ -85,51 +85,69 @@ function EventItem({ item }) {
   );
 }
 
-function CalendarMonth({ month, itemsByDate }) {
+function CalendarMonth({ month, itemsByDate, isCurrentMonth }) {
   const firstDay = new Date(month.getFullYear(), month.getMonth(), 1);
   const startDay = contents.calendar.weekStartsOn % 7;
   const startOffset = (firstDay.getDay() - startDay + 7) % 7;
-  const gridStart = addDays(firstDay, -startOffset);
-  const days = Array.from({ length: 42 }, (_, index) => addDays(gridStart, index));
+  const daysInMonth = new Date(month.getFullYear(), month.getMonth() + 1, 0).getDate();
+  const cellCount = Math.ceil((startOffset + daysInMonth) / 7) * 7;
+  const days = Array.from({ length: cellCount }, (_, index) => {
+    const day = index - startOffset + 1;
+    return day < 1 || day > daysInMonth
+      ? null
+      : new Date(month.getFullYear(), month.getMonth(), day);
+  });
+  const label = new Intl.DateTimeFormat("en", { month: "long", year: "numeric" }).format(month);
 
   return (
-    <div className={styles.calendarGrid} role="grid" aria-label="Calendar dates">
-      {weekdays.map((weekday) => (
-        <div className={styles.weekday} role="columnheader" key={weekday}>
-          {weekday}
-        </div>
-      ))}
-      {days.map((date) => {
-        const items = itemsByDate.get(dateKey(date)) ?? [];
-        const relevant = items.length > 0;
-        const isCurrentMonth = date.getMonth() === month.getMonth();
-        const hasEvent = items.some((item) => item.kind === "event");
-        const cellClassNames = [
-          styles.day,
-          !isCurrentMonth && styles.outsideMonth,
-          !relevant && styles.irrelevant,
-          relevant && (hasEvent ? styles.eventDay : styles.reminderDay),
-        ]
-          .filter(Boolean)
-          .join(" ");
-
-        return (
-          <div className={cellClassNames} role="gridcell" key={dateKey(date)}>
-            <div className={styles.dayHeading}>
-              <span className={styles.mobileWeekday}>
-                {new Intl.DateTimeFormat("en", { weekday: "short" }).format(date)}
-              </span>
-              <time dateTime={dateKey(date)}>{date.getDate()}</time>
-            </div>
-            <div className={styles.dayItems}>
-              {items.map((item, index) => (
-                <EventItem item={item} key={`${item.event.name}-${item.kind}-${index}`} />
-              ))}
-            </div>
+    <section className={styles.month} aria-label={label}>
+      <h3 className={isCurrentMonth ? styles.currentMonthLabel : styles.monthLabel}>{label}</h3>
+      <div className={styles.calendarGrid} role="grid" aria-label={`${label} calendar dates`}>
+        {weekdays.map((weekday) => (
+          <div className={styles.weekday} role="columnheader" key={weekday}>
+            {weekday}
           </div>
-        );
-      })}
-    </div>
+        ))}
+        {days.map((date, index) => {
+          if (!date) {
+            return (
+              <div
+                className={styles.emptyDay}
+                aria-hidden="true"
+                key={`empty-${month.getMonth()}-${index}`}
+              />
+            );
+          }
+
+          const items = itemsByDate.get(dateKey(date)) ?? [];
+          const relevant = items.length > 0;
+          const hasEvent = items.some((item) => item.kind === "event");
+          const cellClassNames = [
+            styles.day,
+            !relevant && styles.irrelevant,
+            relevant && (hasEvent ? styles.eventDay : styles.reminderDay),
+          ]
+            .filter(Boolean)
+            .join(" ");
+
+          return (
+            <div className={cellClassNames} role="gridcell" key={dateKey(date)}>
+              <div className={styles.dayHeading}>
+                <span className={styles.mobileWeekday}>
+                  {new Intl.DateTimeFormat("en", { weekday: "short" }).format(date)}
+                </span>
+                <time dateTime={dateKey(date)}>{date.getDate()}</time>
+              </div>
+              <div className={styles.dayItems}>
+                {items.map((item, index) => (
+                  <EventItem item={item} key={`${item.event.name}-${item.kind}-${index}`} />
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </section>
   );
 }
 
@@ -140,7 +158,8 @@ export default function Calendar() {
   });
   const itemsByDate = getCalendarItems(contents.events);
   const label = new Intl.DateTimeFormat("en", { month: "long", year: "numeric" }).format(month);
-  const { title, eyebrow, emptyMessage, legend } = contents.calendar;
+  const months = [-1, 0, 1].map((offset) => new Date(month.getFullYear(), month.getMonth() + offset, 1));
+  const { title, eyebrow, emptyMessage } = contents.calendar;
 
   function changeMonth(offset) {
     setMonth((current) => new Date(current.getFullYear(), current.getMonth() + offset, 1));
@@ -165,12 +184,16 @@ export default function Calendar() {
           </div>
         </div>
 
-        <div className={styles.legend} aria-label="Calendar legend">
-          <span><i className={styles.eventLegend} /> {legend.event}</span>
-          <span><i className={styles.reminderLegend} /> {legend.reminder}</span>
+        <div className={styles.months}>
+          {months.map((visibleMonth, index) => (
+            <CalendarMonth
+              key={dateKey(visibleMonth)}
+              month={visibleMonth}
+              itemsByDate={itemsByDate}
+              isCurrentMonth={index === 1}
+            />
+          ))}
         </div>
-
-        <CalendarMonth month={month} itemsByDate={itemsByDate} />
         {contents.events.length === 0 && (
           <p className={styles.emptyState}>{emptyMessage}</p>
         )}

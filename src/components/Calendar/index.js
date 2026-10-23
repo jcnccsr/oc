@@ -162,11 +162,6 @@ export default function Calendar() {
           </div>
         </div>
 
-        <div className={styles.legend} aria-label="Calendar legend">
-          <span><i className={styles.eventLegend} /> Event</span>
-          <span><i className={styles.reminderLegend} /> Reminder</span>
-        </div>
-
         <CalendarMonth month={month} itemsByDate={itemsByDate} />
         {contents.events.length === 0 && (
           <p className={styles.emptyState}>No events have been added yet.</p>

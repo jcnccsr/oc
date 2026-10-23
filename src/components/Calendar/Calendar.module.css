@@ -87,15 +87,6 @@
   border-radius: 50%;
 }
 
-.eventLegend {
-  border-color: var(--hue-rouge) !important;
-}
-
-.reminderLegend {
-  border-style: dashed;
-  border-color: var(--hue-rouge) !important;
-}
-
 .calendarGrid {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));

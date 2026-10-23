@@ -1,53 +1,16 @@
-import messageOptions from "@/data/messageOptions.json";
+import contents from "@/data/contents.json";
 
-const eventUrl = "https://www.opencircleyoga.org/event/";
+const calendar = contents.calendar;
+const eventUrl = calendar.eventUrl;
+export const messageTypes = calendar.messageTypes;
+export const titleIcons = calendar.titleIcons;
+export const titleOptions = calendar.titleOptions;
+export const locationOptions = calendar.locations;
 
-export const messageTypes = [
-  {
-    key: "announcement10",
-    label: "Pre-10-Day",
-    message: (name) => `Our ${name} is coming up in 10 days. We'd love to have you join us.`,
-  },
-  {
-    key: "announcement2",
-    label: "Pre-2-Day",
-    message: (name, weekday) => `Our ${name} is happening this ${weekday}.`,
-  },
-  {
-    key: "invitation",
-    label: "Invitation",
-    message: (name) => `Hi! I'd love to invite you to ${name}. It would be wonderful to have you there!`,
-  },
-  {
-    key: "personalReminder",
-    label: "Personal Message",
-    message: (name) => `Hi! Just a personal reminder about ${name}. I hope you can make it.`,
-  },
-];
-
-export const titleIcons = messageOptions.icons;
-export const titleOptions = messageOptions.titles;
-
-export const locationOptions = {
-  Studio: {
-    label: "Studio",
-    name: "Open Circle Yoga Studio",
-    map: "https://maps.app.goo.gl/iLQmYwap9vKjbR3v5",
-  },
-  NHMAD: {
-    label: "NHMAD",
-    name: "Natural History Museum Abu Dhabi",
-    map: "https://maps.app.goo.gl/jkDh6ZsuFBzSN1xU9",
-  },
-  custom: {
-    label: "Other location",
-  },
-};
-
-function getDefaultOption(options, messageType) {
-  const option = options.find((item) => item.defaultFor === messageType);
+function getDefaultTitle(messageType) {
+  const option = titleOptions.find((item) => item.defaultFor === messageType);
   if (!option) {
-    throw new Error(`Missing default message option for: ${messageType}`);
+    throw new Error(`Missing default message title for: ${messageType}`);
   }
   return option.value;
 }
@@ -77,11 +40,14 @@ export function getMessageDraft(event, messageType) {
     throw new Error(`Invalid event date: ${event.date}`);
   }
   const weekday = new Intl.DateTimeFormat("en", { weekday: "long" }).format(date);
+  const message = type.defaultMessage
+    .replaceAll("{{name}}", event.name)
+    .replaceAll("{{weekday}}", weekday);
 
   return {
-    icon: getDefaultOption(titleIcons, messageType),
-    title: getDefaultOption(titleOptions, messageType),
-    message: type.message(event.name, weekday),
+    icon: type.defaultIcon,
+    title: getDefaultTitle(messageType),
+    message,
     name: event.name,
     date: event.date,
     time: event.time,
@@ -89,7 +55,7 @@ export function getMessageDraft(event, messageType) {
     location: event.location,
     additionalDetails: event.details ?? "",
     link: getEventHref(event.link),
-    signature: "From Sundar & Elena",
+    signature: calendar.defaultSignature,
   };
 }
 
@@ -115,14 +81,16 @@ export function generateEventMessage(messageType, fields) {
   }
   const locationName = fields.locationType === "custom" ? fields.location : location.name;
   const href = getEventHref(fields.link);
-  const details = [
-    fields.name.trim(),
-    `📅 ${formattedDate}`,
-    `🕔 ${fields.time.trim()}`,
-    `📍 ${locationName.trim()}`,
-    location.map,
-    fields.additionalDetails.trim(),
-  ].filter(Boolean);
+  const replacements = {
+    name: fields.name.trim(),
+    date: formattedDate,
+    time: fields.time.trim(),
+    location: locationName.trim(),
+  };
+  const details = calendar.messageDetails
+    .map((line) => line.replace(/\{\{(\w+)\}\}/g, (_, key) => replacements[key] ?? ""))
+    .concat(location.map ?? "", fields.additionalDetails.trim())
+    .filter(Boolean);
   const title = [fields.icon, fields.title.trim()].filter(Boolean).join(" ");
 
   return [
@@ -132,7 +100,7 @@ export function generateEventMessage(messageType, fields) {
     "",
     details.join("\n"),
     "",
-    "🔗 Reserve your spot here:",
+    calendar.reservationPrompt,
     "",
     href,
     "",

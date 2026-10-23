@@ -1,4 +1,100 @@
 {
+  "calendar": {
+    "eventUrl": "https://www.opencircleyoga.org/event/",
+    "title": "Events calendar",
+    "eyebrow": "Open Circle Yoga",
+    "emptyMessage": "No events have been added yet.",
+    "legend": {
+      "event": "Event",
+      "reminder": "Reminder"
+    },
+    "weekStartsOn": 1,
+    "weekdays": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    "reminders": [
+      {
+        "kind": "reminder-10",
+        "daysBefore": 10,
+        "label": "10 days before",
+        "messageType": "announcement10"
+      },
+      {
+        "kind": "reminder-2",
+        "daysBefore": 2,
+        "label": "2 days before",
+        "messageType": "announcement2"
+      }
+    ],
+    "eventMessageTypes": ["invitation", "personalReminder"],
+    "messageTypes": [
+      {
+        "key": "announcement10",
+        "label": "Pre-10-Day",
+        "defaultIcon": "🌿",
+        "defaultMessage": "Our {{name}} is coming up in 10 days. We'd love to have you join us."
+      },
+      {
+        "key": "announcement2",
+        "label": "Pre-2-Day",
+        "defaultIcon": "🪷",
+        "defaultMessage": "Our {{name}} is happening this {{weekday}}."
+      },
+      {
+        "key": "invitation",
+        "label": "Invitation",
+        "defaultIcon": "🎉",
+        "defaultMessage": "Hi! I'd love to invite you to {{name}}. It would be wonderful to have you there!"
+      },
+      {
+        "key": "personalReminder",
+        "label": "Personal Message",
+        "defaultIcon": "📬",
+        "defaultMessage": "Hi! Just a personal reminder about {{name}}. I hope you can make it."
+      }
+    ],
+    "titleIcons": [
+      { "value": "🌿" },
+      { "value": "🪷" },
+      { "value": "🎉" },
+      { "value": "📬" },
+      { "value": "✨" },
+      { "value": "💌" },
+      { "value": "🔔" },
+      { "value": "🦕" },
+      { "value": "🦖" },
+      { "value": "🧘" },
+      { "value": "🧘‍♀️" },
+      { "value": "🧘‍♂️" }
+    ],
+    "titleOptions": [
+      { "label": "Save the date", "value": "Save the date", "defaultFor": "announcement10" },
+      { "label": "A little reminder", "value": "A little reminder", "defaultFor": "announcement2" },
+      { "label": "You're invited", "value": "You're invited", "defaultFor": "invitation" },
+      { "label": "A note for you", "value": "A note for you", "defaultFor": "personalReminder" }
+    ],
+    "locations": {
+      "Studio": {
+        "label": "Studio",
+        "name": "Open Circle Yoga Studio",
+        "map": "https://maps.app.goo.gl/iLQmYwap9vKjbR3v5"
+      },
+      "NHMAD": {
+        "label": "NHMAD",
+        "name": "Natural History Museum Abu Dhabi",
+        "map": "https://maps.app.goo.gl/jkDh6ZsuFBzSN1xU9"
+      },
+      "custom": {
+        "label": "Other location"
+      }
+    },
+    "messageDetails": [
+      "{{name}}",
+      "📅 {{date}}",
+      "🕔 {{time}}",
+      "📍 {{location}}"
+    ],
+    "reservationPrompt": "🔗 Reserve your spot here:",
+    "defaultSignature": "From Sundar & Elena"
+  },
   "events": [
     {
       "name": "Full Moon Cacao Ceremony",

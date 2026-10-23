@@ -6,7 +6,7 @@ import contents from "@/data/contents.json";
 import { getEventHref, messageTypes } from "@/utils/eventMessages";
 import styles from "./Calendar.module.css";
 
-const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const { weekdays, reminders, eventMessageTypes } = contents.calendar;
 
 function dateKey(date) {
   const year = date.getFullYear();
@@ -45,8 +45,12 @@ function getCalendarItems(events) {
   events.forEach((event) => {
     const eventDate = getEventDate(event.date);
     addItem(eventDate, { event, kind: "event" });
-    addItem(addDays(eventDate, -10), { event, kind: "reminder-10" });
-    addItem(addDays(eventDate, -2), { event, kind: "reminder-2" });
+    reminders.forEach((reminder) => {
+      addItem(addDays(eventDate, -reminder.daysBefore), {
+        event,
+        kind: reminder.kind,
+      });
+    });
   });
 
   return itemsByDate;
@@ -55,12 +59,9 @@ function getCalendarItems(events) {
 function EventItem({ item }) {
   const { event, kind } = item;
   const isEvent = kind === "event";
-  const reminder = kind === "reminder-10" ? "10 days before" : "2 days before";
-  const messageKeys = {
-    "reminder-10": ["announcement10"],
-    "reminder-2": ["announcement2"],
-    event: ["invitation", "personalReminder"],
-  }[kind];
+  const reminder = reminders.find((item) => item.kind === kind);
+  const messageKeys = isEvent ? eventMessageTypes : [reminder.messageType];
+  const reminderLabel = reminder?.label;
   const availableMessages = messageTypes.filter((message) => messageKeys.includes(message.key));
 
   return (
@@ -75,7 +76,7 @@ function EventItem({ item }) {
         </>
       ) : (
         <>
-          <span className={styles.reminderLabel}>{reminder}</span>
+          <span className={styles.reminderLabel}>{reminderLabel}</span>
           <span>{event.name}</span>
         </>
       )}
@@ -86,8 +87,9 @@ function EventItem({ item }) {
 
 function CalendarMonth({ month, itemsByDate }) {
   const firstDay = new Date(month.getFullYear(), month.getMonth(), 1);
-  const mondayOffset = (firstDay.getDay() + 6) % 7;
-  const gridStart = addDays(firstDay, -mondayOffset);
+  const startDay = contents.calendar.weekStartsOn % 7;
+  const startOffset = (firstDay.getDay() - startDay + 7) % 7;
+  const gridStart = addDays(firstDay, -startOffset);
   const days = Array.from({ length: 42 }, (_, index) => addDays(gridStart, index));
 
   return (
@@ -138,6 +140,7 @@ export default function Calendar() {
   });
   const itemsByDate = getCalendarItems(contents.events);
   const label = new Intl.DateTimeFormat("en", { month: "long", year: "numeric" }).format(month);
+  const { title, eyebrow, emptyMessage, legend } = contents.calendar;
 
   function changeMonth(offset) {
     setMonth((current) => new Date(current.getFullYear(), current.getMonth() + offset, 1));
@@ -148,8 +151,8 @@ export default function Calendar() {
       <section className={styles.calendar} aria-label="Events calendar">
         <div className={styles.calendarHeader}>
           <div>
-            <p className={styles.eyebrow}>Open Circle Yoga</p>
-            <h2>Events calendar</h2>
+            <p className={styles.eyebrow}>{eyebrow}</p>
+            <h2>{title}</h2>
           </div>
           <div className={styles.monthControls}>
             <button type="button" onClick={() => changeMonth(-1)} aria-label="Previous month">
@@ -162,9 +165,14 @@ export default function Calendar() {
           </div>
         </div>
 
+        <div className={styles.legend} aria-label="Calendar legend">
+          <span><i className={styles.eventLegend} /> {legend.event}</span>
+          <span><i className={styles.reminderLegend} /> {legend.reminder}</span>
+        </div>
+
         <CalendarMonth month={month} itemsByDate={itemsByDate} />
         {contents.events.length === 0 && (
-          <p className={styles.emptyState}>No events have been added yet.</p>
+          <p className={styles.emptyState}>{emptyMessage}</p>
         )}
       </section>
     </main>

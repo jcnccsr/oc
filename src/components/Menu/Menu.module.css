@@ -1,13 +1,44 @@
 .menu {
   width: 100%;
+  margin-bottom: 2rem;
 }
+
 .menu ul {
   display: flex;
-  align-items: space-between;
+  align-items: center;
+  gap: 0.35rem;
 }
+
 .menu ul li {
-  margin: 0 1rem;
+  flex: 0 0 auto;
 }
+
 .menu ul li:first-child {
   flex: 1;
+}
+
+.menu a {
+  display: inline-flex;
+  min-height: 2.5rem;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 2px solid transparent;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: color 160ms ease, border-color 160ms ease;
+}
+
+.menu a:hover {
+  color: var(--hue-sauge);
+  border-bottom-color: var(--hue-sauge);
+}
+
+@media (max-width: 480px) {
+  .menu {
+    margin-bottom: 1.5rem;
+  }
+
+  .menu a {
+    padding: 0.5rem;
+  }
 }

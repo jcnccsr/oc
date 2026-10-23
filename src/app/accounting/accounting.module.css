@@ -1,7 +1,8 @@
 .main {
   width: 100%;
-  max-width: 1240px;
-  padding: 2rem;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 2rem 2rem;
 }
 
 .accounting {
@@ -38,9 +39,9 @@
   gap: 1rem;
   min-height: 6rem;
   padding: 1rem;
-  border: 1px solid var(--hue-beige);
-  border-radius: 0.5rem;
-  background: color-mix(in srgb, var(--hue-beige) 35%, var(--background));
+  border: 1px solid color-mix(in srgb, var(--foreground) 15%, transparent);
+  border-radius: 0.25rem;
+  background: color-mix(in srgb, var(--foreground) 3%, var(--background));
 }
 
 .icon {
@@ -49,9 +50,10 @@
   width: 3rem;
   height: 3rem;
   place-items: center;
-  border: 1px solid var(--hue-sauge);
+  border: 1px solid var(--hue-rouge);
   border-radius: 50%;
   background: var(--background);
+  color: var(--hue-rouge);
   font-size: 1.4rem;
 }
 
@@ -67,9 +69,13 @@
 }
 
 .company a {
-  color: var(--hue-sauge);
+  color: var(--hue-rouge);
   text-decoration: underline;
   text-underline-offset: 0.15em;
+}
+
+.company a:hover {
+  color: var(--hue-sauge);
 }
 
 .placeholder {

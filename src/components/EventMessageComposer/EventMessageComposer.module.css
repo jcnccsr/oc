@@ -11,9 +11,10 @@
   aspect-ratio: 1;
   place-items: center;
   padding: 0.15rem;
-  border: 1px solid var(--hue-sauge);
+  border: 1px solid var(--hue-rouge);
   border-radius: 50%;
   background: var(--background);
+  transition: background-color 160ms ease, border-color 160ms ease;
 }
 
 .messageButton img {
@@ -22,9 +23,13 @@
   object-fit: contain;
 }
 
-.messageButton:hover,
+.messageButton:hover {
+  border-color: var(--hue-sauge);
+  background: var(--hue-sauge);
+}
+
 .messageButton:focus-visible {
-  outline: 2px solid var(--hue-sauge);
+  outline: 2px solid var(--hue-rouge);
   outline-offset: 2px;
 }
 
@@ -37,14 +42,15 @@
   padding: 0;
   overflow: auto;
   transform: translate(-50%, -50%);
-  border: 1px solid var(--hue-beige);
-  border-radius: 0.75rem;
+  border: 1px solid color-mix(in srgb, var(--foreground) 20%, transparent);
+  border-radius: 0.35rem;
   color: var(--foreground);
   background: var(--background);
+  box-shadow: 0 1.5rem 5rem color-mix(in srgb, var(--foreground) 20%, transparent);
 }
 
 .dialog::backdrop {
-  background: color-mix(in srgb, var(--hue-noire) 55%, transparent);
+  background: color-mix(in srgb, var(--foreground) 55%, transparent);
 }
 
 .composer {
@@ -76,10 +82,20 @@
 .closeButton {
   width: 2.25rem;
   height: 2.25rem;
-  border: 1px solid var(--hue-beige);
-  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--foreground) 20%, transparent);
+  border-radius: 0.25rem;
   background: var(--background);
   font-size: 1.5rem;
+}
+
+.closeButton:hover {
+  border-color: var(--hue-sauge);
+  background: var(--hue-sauge);
+}
+
+.closeButton:focus-visible {
+  outline: 2px solid var(--hue-rouge);
+  outline-offset: 2px;
 }
 
 .typeButtons {
@@ -90,15 +106,28 @@
 
 .typeButtons button {
   padding: 0.4rem 0.65rem;
-  border: 1px solid var(--hue-beige);
+  border: 1px solid var(--hue-rouge);
   border-radius: 2rem;
   background: var(--background);
   font-size: 0.8rem;
+  transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease;
+}
+
+.typeButtons button:hover {
+  border-color: var(--hue-sauge);
+  background: var(--hue-sauge);
 }
 
 .typeButtons .selectedType {
+  color: var(--background);
+  border-color: var(--hue-rouge);
+  background: var(--hue-rouge);
+}
+
+.typeButtons .selectedType:hover {
+  color: var(--foreground);
   border-color: var(--hue-sauge);
-  background: color-mix(in srgb, var(--hue-beige) 60%, var(--background));
+  background: var(--hue-sauge);
 }
 
 .form {
@@ -128,8 +157,8 @@
 .preview {
   width: 100%;
   padding: 0.6rem;
-  border: 1px solid var(--hue-beige);
-  border-radius: 0.35rem;
+  border: 1px solid color-mix(in srgb, var(--foreground) 22%, transparent);
+  border-radius: 0.2rem;
   color: var(--foreground);
   background: var(--background);
   font-family: var(--font-dm-sans), sans-serif;
@@ -137,10 +166,19 @@
   font-weight: 400;
 }
 
+.form input:focus-visible,
+.form textarea:focus-visible,
+.form select:focus-visible,
+.preview:focus-visible {
+  border-color: var(--hue-rouge);
+  outline: 2px solid var(--hue-rouge);
+  outline-offset: 1px;
+}
+
 .validationMessage {
   padding: 0.6rem;
-  border: 1px solid var(--hue-beige);
-  border-radius: 0.35rem;
+  border: 1px solid color-mix(in srgb, var(--foreground) 22%, transparent);
+  border-radius: 0.2rem;
   color: var(--hue-rouge);
   font-size: 0.8rem;
   font-weight: 400;
@@ -167,11 +205,23 @@
 
 .copyButton {
   padding: 0.6rem 1rem;
-  border: 1px solid var(--hue-sauge);
-  border-radius: 2rem;
+  border: 1px solid var(--hue-rouge);
+  border-radius: 0.25rem;
   color: var(--background);
-  background: var(--hue-sauge);
+  background: var(--hue-rouge);
   font-weight: 700;
+  transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease;
+}
+
+.copyButton:hover:not(:disabled) {
+  color: var(--foreground);
+  border-color: var(--hue-sauge);
+  background: var(--hue-sauge);
+}
+
+.copyButton:focus-visible {
+  outline: 2px solid var(--hue-rouge);
+  outline-offset: 2px;
 }
 
 .copyButton:disabled {

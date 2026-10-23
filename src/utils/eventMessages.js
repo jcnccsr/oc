@@ -3,25 +3,25 @@ const eventUrl = "https://www.opencircleyoga.org/event/";
 export const messageTypes = [
   {
     key: "announcement10",
-    label: "10-day announcement",
+    label: "Pre-10-Day",
     title: "🌿 Save the date",
     message: (name) => `Our ${name} is coming up in 10 days. We'd love to have you join us.`,
   },
   {
     key: "announcement2",
-    label: "2-day announcement",
+    label: "Pre-2-Day",
     title: "🌅 A little reminder",
     message: (name, weekday) => `Our ${name} is happening this ${weekday}.`,
   },
   {
     key: "invitation",
-    label: "Personal invitation",
+    label: "Invitation",
     title: "💌 You're invited",
     message: (name) => `Hi! I'd love to invite you to ${name}. It would be wonderful to have you there!`,
   },
   {
     key: "personalReminder",
-    label: "Personal participant message",
+    label: "Personal Message",
     title: "💛 A note for you",
     message: (name) => `Hi! Just a personal reminder about ${name}. I hope you can make it.`,
   },

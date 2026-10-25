@@ -8,12 +8,8 @@ import invitationIcon from "../../public/svg/invite.svg";
 import personalReminderIcon from "../../public/svg/personal.svg";
 import {
   generateEventMessage,
-  getMessageDraft,
-  isValidEventDate,
-  locationOptions,
   messageTypes,
   titleIcons,
-  titleOptions,
 } from "@/utils/eventMessages";
 import styles from "./EventMessageComposer.module.css";
 
@@ -26,50 +22,33 @@ const messageIcons = {
 
 export default function EventMessageComposer({ event, availableMessages }) {
   const dialogRef = useRef(null);
+  const messageInputRef = useRef(null);
   const headingId = useId();
-  const titleInputId = useId();
-  const titleOptionsId = useId();
   const [selectedType, setSelectedType] = useState(null);
-  const [fields, setFields] = useState(null);
+  const [generatedMessage, setGeneratedMessage] = useState("");
   const [copyStatus, setCopyStatus] = useState("");
-  const [titleOptionsOpen, setTitleOptionsOpen] = useState(false);
-  const hasValidDate = fields?.date && isValidEventDate(fields.date);
-  const generatedMessage = selectedType && hasValidDate
-    ? generateEventMessage(selectedType, fields)
-    : "";
 
   function openComposer(type) {
     setSelectedType(type.key);
-    setFields(getMessageDraft(event, type.key));
+    setGeneratedMessage(generateEventMessage(type.key, event));
     setCopyStatus("");
     dialogRef.current?.showModal();
   }
 
-  function updateField(field, value) {
-    setFields((current) => ({ ...current, [field]: value }));
-  }
+  function insertIcon(icon) {
+    const input = messageInputRef.current;
+    if (!input) return;
 
-  function handleTitleKeyDown(event) {
-    if (event.key === "Escape") {
-      setTitleOptionsOpen(false);
-    } else if ((event.key === "ArrowDown" || event.key === "ArrowUp") && titleOptionsOpen) {
-      event.preventDefault();
-      const options = event.currentTarget.nextElementSibling?.querySelectorAll("button");
-      const option = event.key === "ArrowDown" ? options?.[0] : options?.[options.length - 1];
-      option?.focus();
-    }
-  }
-
-  function handleTitleOptionKeyDown(event) {
-    if (event.key !== "ArrowDown" && event.key !== "ArrowUp") {
-      return;
-    }
-
-    event.preventDefault();
-    const options = Array.from(event.currentTarget.parentElement.querySelectorAll("button"));
-    const currentIndex = options.indexOf(event.currentTarget);
-    const nextIndex = currentIndex + (event.key === "ArrowDown" ? 1 : -1);
-    options[nextIndex]?.focus();
+    const start = input.selectionStart;
+    const end = input.selectionEnd;
+    const nextValue = `${generatedMessage.slice(0, start)}${icon}${generatedMessage.slice(end)}`;
+    setGeneratedMessage(nextValue);
+    setCopyStatus("");
+    requestAnimationFrame(() => {
+      input.focus();
+      const caretPosition = start + icon.length;
+      input.setSelectionRange(caretPosition, caretPosition);
+    });
   }
 
   async function copyMessage() {
@@ -103,12 +82,12 @@ export default function EventMessageComposer({ event, availableMessages }) {
         ref={dialogRef}
         onClose={() => {
           setSelectedType(null);
-          setFields(null);
+          setGeneratedMessage("");
           setCopyStatus("");
         }}
         aria-labelledby={headingId}
       >
-        {selectedType && fields && (
+        {selectedType && (
           <section className={styles.composer}>
             <div className={styles.dialogHeader}>
               <div>
@@ -135,7 +114,7 @@ export default function EventMessageComposer({ event, availableMessages }) {
                   type="button"
                   onClick={() => {
                     setSelectedType(type.key);
-                    setFields(getMessageDraft(event, type.key));
+                    setGeneratedMessage(generateEventMessage(type.key, event));
                     setCopyStatus("");
                   }}
                 >
@@ -144,142 +123,35 @@ export default function EventMessageComposer({ event, availableMessages }) {
               ))}
             </div>
 
-            <div className={styles.form}>
-              <div className={styles.fieldRow}>
-                <select
-                  className={styles.iconSelect}
-                  aria-label="Title icon"
-                  value={fields.icon}
-                  onChange={(e) => updateField("icon", e.target.value)}
-                >
-                  {titleIcons.map((icon) => (
-                    <option key={icon.value} value={icon.value}>{icon.value}</option>
-                  ))}
-                </select>
-                <div className={styles.titleField}>
-                  <label htmlFor={titleInputId}>Title</label>
-                  <div
-                    className={styles.titleInputWrapper}
-                    onBlur={(e) => {
-                      if (!e.currentTarget.contains(e.relatedTarget)) {
-                        setTitleOptionsOpen(false);
-                      }
-                    }}
+            <div className={styles.iconPicker} aria-label="Insert an icon into the message">
+              <span>Insert icon at cursor:</span>
+              <div>
+                {titleIcons.map((icon) => (
+                  <button
+                    key={icon.value}
+                    type="button"
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => insertIcon(icon.value)}
+                    aria-label={`Insert ${icon.value}`}
+                    title={`Insert ${icon.value}`}
                   >
-                    <input
-                      id={titleInputId}
-                      role="combobox"
-                      aria-autocomplete="list"
-                      aria-controls={titleOptionsId}
-                      aria-expanded={titleOptionsOpen}
-                      value={fields.title}
-                      onChange={(e) => {
-                        updateField("title", e.target.value);
-                        setTitleOptionsOpen(true);
-                      }}
-                      onFocus={() => setTitleOptionsOpen(true)}
-                      onClick={() => setTitleOptionsOpen(true)}
-                      onKeyDown={handleTitleKeyDown}
-                    />
-                    {titleOptionsOpen && (
-                      <div className={styles.titleOptions} id={titleOptionsId} role="listbox">
-                        {titleOptions.map((title) => (
-                          <button
-                            aria-selected={fields.title === title.value}
-                            key={title.value}
-                            role="option"
-                            type="button"
-                            onKeyDown={handleTitleOptionKeyDown}
-                            onClick={() => {
-                              updateField("title", title.value);
-                              setTitleOptionsOpen(false);
-                            }}
-                          >
-                            {title.label}
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </div>
+                    {icon.value}
+                  </button>
+                ))}
               </div>
-              <label>
-                Message
-                <textarea
-                  rows={3}
-                  value={fields.message}
-                  onChange={(e) => updateField("message", e.target.value)}
-                />
-              </label>
-              <div className={styles.fieldRow}>
-                <label>
-                  Event name
-                  <input value={fields.name} onChange={(e) => updateField("name", e.target.value)} />
-                </label>
-                <label>
-                  Date
-                  <input
-                    type="date"
-                    value={fields.date}
-                    onChange={(e) => updateField("date", e.target.value)}
-                  />
-                </label>
-              </div>
-              <div className={styles.fieldRow}>
-                <label>
-                  Time
-                  <input value={fields.time} onChange={(e) => updateField("time", e.target.value)} />
-                </label>
-                <label>
-                  Location type
-                  <select
-                    value={fields.locationType}
-                    onChange={(e) => updateField("locationType", e.target.value)}
-                  >
-                    {Object.entries(locationOptions).map(([value, option]) => (
-                      <option key={value} value={value}>{option.label}</option>
-                    ))}
-                  </select>
-                </label>
-              </div>
-              {fields.locationType === "custom" && (
-                <label>
-                  Location name
-                  <input
-                    value={fields.location}
-                    onChange={(e) => updateField("location", e.target.value)}
-                  />
-                </label>
-              )}
-              <label>
-                Additional details
-                <textarea
-                  rows={3}
-                  placeholder="Price, hosts, transport notes, or other event details"
-                  value={fields.additionalDetails}
-                  onChange={(e) => updateField("additionalDetails", e.target.value)}
-                />
-              </label>
-              <label>
-                Event link or slug
-                <input value={fields.link} onChange={(e) => updateField("link", e.target.value)} />
-              </label>
-              <label>
-                Signature
-                <input
-                  value={fields.signature}
-                  onChange={(e) => updateField("signature", e.target.value)}
-                />
-              </label>
             </div>
-
-            <label className={styles.previewLabel}>
+            <label className={styles.messageField}>
               Generated message
-              {generatedMessage ? (
-                <textarea className={styles.preview} rows={12} readOnly value={generatedMessage} />
-              ) : (
-                <span className={styles.validationMessage}>Enter a valid event date to generate the message.</span>
-              )}
+              <textarea
+                className={styles.preview}
+                ref={messageInputRef}
+                rows={20}
+                value={generatedMessage}
+                onChange={(e) => {
+                  setGeneratedMessage(e.target.value);
+                  setCopyStatus("");
+                }}
+              />
             </label>
             <div className={styles.actions}>
               <span aria-live="polite">{copyStatus}</span>

@@ -1,7 +1,7 @@
 {
   "calendar": {
     "eventUrl": "https://www.opencircleyoga.org/event/",
-    "title": "Events calendar",
+    "title": "Events Calendar",
     "eyebrow": "Open Circle Yoga",
     "emptyMessage": "No events have been added yet.",
     "weekStartsOn": 1,
@@ -10,13 +10,13 @@
       {
         "kind": "reminder-10",
         "daysBefore": 10,
-        "label": "10 days before",
+        "label": "10 Days Before",
         "messageType": "announcement10"
       },
       {
         "kind": "reminder-2",
         "daysBefore": 2,
-        "label": "2 days before",
+        "label": "2 Days Before",
         "messageType": "announcement2"
       }
     ],
@@ -25,61 +25,239 @@
       {
         "key": "announcement10",
         "label": "Pre-10-Day",
-        "defaultIcon": "🌿",
         "defaultMessage": "Our {{name}} is coming up in 10 days. We'd love to have you join us."
       },
       {
         "key": "announcement2",
         "label": "Pre-2-Day",
-        "defaultIcon": "🪷",
         "defaultMessage": "Our {{name}} is happening this {{weekday}}."
       },
       {
         "key": "invitation",
         "label": "Invitation",
-        "defaultIcon": "🎉",
-        "defaultMessage": "Hi! I'd love to invite you to {{name}}. It would be wonderful to have you there!"
+        "defaultMessage": "We'd love to invite you to {{name}}."
       },
       {
         "key": "personalReminder",
         "label": "Personal Message",
-        "defaultIcon": "📬",
-        "defaultMessage": "Hi! Just a personal reminder about {{name}}. I hope you can make it."
+        "defaultMessage": "Thank you for registering!\n\nWe look forward to welcoming you to our {{name}} at the Natural History Museum Abu Dhabi."
       }
     ],
+    "eventTemplates": {
+      "fullMoonCacao": {
+        "label": "Full Moon Cacao Ceremony",
+        "messages": {
+          "announcement10": {
+            "title": "✨ {{name}}",
+            "details": "{{name}}\n📅 {{date}}\n🕔 {{time}}\n📍 {{location}}\n{{map}}",
+            "additionalMessage": "Our {{name}} is coming up in 10 days. We'd love to have you join us.",
+            "signature": "From {{facilitator}}"
+          },
+          "announcement2": {
+            "title": "🔔 A little reminder",
+            "details": "{{name}}\n📅 {{date}}\n🕔 {{time}}\n📍 {{location}}\n{{map}}",
+            "additionalMessage": "Our {{name}} is happening this {{weekday}}.",
+            "signature": "From {{facilitator}}"
+          },
+          "invitation": {
+            "title": "Hi,",
+            "details": "{{name}}\n📅 {{date}}\n🕔 {{time}}\n📍 {{location}}\n{{map}}",
+            "additionalMessage": "We'd love to invite you to {{name}}.",
+            "signature": "From {{facilitator}}"
+          },
+          "personalReminder": {
+            "title": "Hello,",
+            "details": "{{name}}\n📅 {{date}}\n🕔 {{time}}\n📍 {{location}}\n{{map}}",
+            "additionalMessage": "Thank you for registering! We look forward to welcoming you to {{name}}.",
+            "signature": "From {{facilitator}}"
+          }
+        }
+      },
+      "fluteCrystalBowls": {
+        "label": "Flute & Crystal Bowls",
+        "messages": {
+          "announcement10": {
+            "title": "✨ {{name}}",
+            "details": "{{name}}\n📅 {{date}}\n🕔 {{time}}\n📍 {{location}}\n{{map}}",
+            "additionalMessage": "Our {{name}} is coming up in 10 days. We'd love to have you join us.",
+            "signature": "From {{facilitator}}"
+          },
+          "announcement2": {
+            "title": "🔔 A little reminder",
+            "details": "{{name}}\n📅 {{date}}\n🕔 {{time}}\n📍 {{location}}\n{{map}}",
+            "additionalMessage": "Our {{name}} is happening this {{weekday}}.",
+            "signature": "From {{facilitator}}"
+          },
+          "invitation": {
+            "title": "Hi,",
+            "details": "{{name}}\n📅 {{date}}\n🕔 {{time}}\n📍 {{location}}\n{{map}}",
+            "additionalMessage": "We'd love to invite you to {{name}}.",
+            "signature": "From {{facilitator}}"
+          },
+          "personalReminder": {
+            "title": "Hello,",
+            "details": "{{name}}\n📅 {{date}}\n🕔 {{time}}\n📍 {{location}}\n{{map}}",
+            "additionalMessage": "Thank you for registering! We look forward to welcoming you to {{name}}.",
+            "signature": "From {{facilitator}}"
+          }
+        }
+      },
+      "beingOneWithEverything": {
+        "label": "Being One With Everything",
+        "messages": {
+          "announcement10": {
+            "title": "✨ {{name}}",
+            "details": "{{name}}\n📅 {{date}}\n🕔 {{time}}\n📍 {{location}}\n{{map}}",
+            "additionalMessage": "Our {{name}} is coming up in 10 days. We'd love to have you join us.",
+            "signature": "From {{facilitator}}"
+          },
+          "announcement2": {
+            "title": "🔔 A little reminder",
+            "details": "{{name}}\n📅 {{date}}\n🕔 {{time}}\n📍 {{location}}\n{{map}}",
+            "additionalMessage": "Our {{name}} is happening this {{weekday}}.",
+            "signature": "From {{facilitator}}"
+          },
+          "invitation": {
+            "title": "Hi,",
+            "details": "{{name}}\n📅 {{date}}\n🕔 {{time}}\n📍 {{location}}\n{{map}}",
+            "additionalMessage": "We'd love to invite you to {{name}}.",
+            "signature": "From {{facilitator}}"
+          },
+          "personalReminder": {
+            "title": "Hello,",
+            "details": "{{name}}\n📅 {{date}}\n🕔 {{time}}\n📍 {{location}}\n{{map}}",
+            "additionalMessage": "Thank you for registering! We look forward to welcoming you to {{name}}.",
+            "signature": "From {{facilitator}}"
+          }
+        }
+      },
+      "nhmadMorningYoga": {
+        "label": "NHMAD: Morning Yoga Flow",
+        "messages": {
+          "announcement10": {
+            "title": "✨ {{name}}",
+            "details": "{{name}}\n📅 {{date}}\n🕔 {{time}}\n📍 {{location}}\n{{map}}",
+            "additionalMessage": "Our {{name}} is coming up in 10 days. We'd love to have you join us.\n\n🎟️ Registration required + ⚠️ valid same-day museum admission ticket.",
+            "signature": "From {{facilitator}}"
+          },
+          "announcement2": {
+            "title": "🔔 A little reminder",
+            "details": "{{name}}\n📅 {{date}}\n🕔 {{time}}\n📍 {{location}}\n{{map}}",
+            "additionalMessage": "Our {{name}} is happening this {{weekday}}.\n\n🎟️ Registration required + ⚠️ valid same-day museum admission ticket.",
+            "signature": "From {{facilitator}}"
+          },
+          "invitation": {
+            "title": "Hi,",
+            "details": "{{name}}\n📅 {{date}}\n🕔 {{time}}\n📍 {{location}}\n{{map}}",
+            "additionalMessage": "We'd love to invite you to {{name}}.",
+            "signature": "From {{facilitator}}"
+          },
+          "personalReminder": {
+            "title": "Hello,",
+            "details": "{{name}}\n📅 {{date}}\n🕔 {{time}}\n📍 {{location}}\n{{map}}",
+            "additionalMessage": "Meeting Point: Atrium, Beneath the Sauropods 🦕✨\n\nA few things to keep in mind:\n\n* The session is suitable for all levels.\n* Please bring your own yoga mat.\n* You’ll need a valid Natural History Museum Abu Dhabi admission ticket for {{date}}. We recommend purchasing it in advance and having it ready at check-in.\n* Please arrive 10–15 minutes early so you have time to settle in before we begin.\n\nIf you have any questions, feel free to reach out to us on 058 279 1010.\n\nWe’re looking forward to sharing this beautiful morning practice with you, surrounded by the wonders of our natural world. 🌿🧘‍♀️🦕🤍",
+            "signature": "From {{facilitator}}"
+          }
+        }
+      },
+      "nhmadSoundHealing": {
+        "label": "NHMAD: Sound Healing",
+        "messages": {
+          "announcement10": {
+            "title": "✨ {{name}}",
+            "details": "{{name}}\n📅 {{date}}\n🕔 {{time}}\n📍 {{location}}\n{{map}}",
+            "additionalMessage": "Our {{name}} is coming up in 10 days. We'd love to have you join us.\n\n🎟️ Registration required + ⚠️ valid same-day museum admission ticket.",
+            "signature": "From {{facilitator}}"
+          },
+          "announcement2": {
+            "title": "🔔 A little reminder",
+            "details": "{{name}}\n📅 {{date}}\n🕔 {{time}}\n📍 {{location}}\n{{map}}",
+            "additionalMessage": "Our {{name}} is happening this {{weekday}}.\n\n🎟️ Registration required + ⚠️ valid same-day museum admission ticket.",
+            "signature": "From {{facilitator}}"
+          },
+          "invitation": {
+            "title": "Hi,",
+            "details": "{{name}}\n📅 {{date}}\n🕔 {{time}}\n📍 {{location}}\n{{map}}",
+            "additionalMessage": "We'd love to invite you to {{name}}.",
+            "signature": "From {{facilitator}}"
+          },
+          "personalReminder": {
+            "title": "Hello,",
+            "details": "{{name}}\n📅 {{date}}\n🕔 {{time}}\n📍 {{location}}\n{{map}}",
+            "additionalMessage": "Thank you for registering! We look forward to welcoming you to {{name}} at the Natural History Museum Abu Dhabi.",
+            "signature": "From {{facilitator}}"
+          }
+        }
+      },
+      "retreat": {
+        "label": "Retreat",
+        "messages": {
+          "announcement10": {
+            "title": "✨ {{name}}",
+            "details": "{{name}}\n📅 {{date}}\n🕔 {{time}}\n📍 {{location}}\n{{map}}",
+            "additionalMessage": "Our {{name}} is coming up in 10 days. We'd love to have you join us.",
+            "signature": "From {{facilitator}}"
+          },
+          "announcement2": {
+            "title": "🔔 A little reminder",
+            "details": "{{name}}\n📅 {{date}}\n🕔 {{time}}\n📍 {{location}}\n{{map}}",
+            "additionalMessage": "Our {{name}} is happening this {{weekday}}.",
+            "signature": "From {{facilitator}}"
+          },
+          "invitation": {
+            "title": "Hi,",
+            "details": "{{name}}\n📅 {{date}}\n🕔 {{time}}\n📍 {{location}}\n{{map}}",
+            "additionalMessage": "We'd love to invite you to {{name}}.",
+            "signature": "From {{facilitator}}"
+          },
+          "personalReminder": {
+            "title": "Hello,",
+            "details": "{{name}}\n📅 {{date}}\n🕔 {{time}}\n📍 {{location}}\n{{map}}",
+            "additionalMessage": "Thank you for registering! We look forward to welcoming you to {{name}}.",
+            "signature": "From {{facilitator}}"
+          }
+        }
+      }
+    },
     "titleIcons": [
       { "value": "🌿" },
       { "value": "🪷" },
       { "value": "🎉" },
-      { "value": "📬" },
       { "value": "✨" },
-      { "value": "💌" },
+      { "value": "🎟️" },
       { "value": "🔔" },
       { "value": "🦕" },
-      { "value": "🦖" },
+      { "value": "🔥" },
       { "value": "🧘" },
-      { "value": "🧘‍♀️" },
-      { "value": "🧘‍♂️" }
+      { "value": "💛" },
+      { "value": "💫" }
     ],
     "titleOptions": [
-      { "label": "Save the date", "value": "Save the date", "defaultFor": "announcement10" },
-      { "label": "A little reminder", "value": "A little reminder", "defaultFor": "announcement2" },
-      { "label": "You're invited", "value": "You're invited", "defaultFor": "invitation" },
-      { "label": "A note for you", "value": "A note for you", "defaultFor": "personalReminder" }
+      { "label": "Event name", "value": "✨ {{name}}", "defaultFor": "announcement10" },
+      { "label": "A little reminder", "value": "🔔 A little reminder", "defaultFor": "announcement2" },
+      { "label": "You're invited", "value": "Hi ,", "defaultFor": "invitation" },
+      { "label": "A note for you", "value": "Hello ,", "defaultFor": "personalReminder" }
     ],
     "locations": {
       "Studio": {
         "label": "Studio",
         "name": "Open Circle Yoga Studio",
-        "map": "https://maps.app.goo.gl/iLQmYwap9vKjbR3v5"
+        "map": "https://maps.app.goo.gl/iLQmYwap9vKjbR3v5",
+        "defaultAdditionalDetails": ""
       },
       "NHMAD": {
         "label": "NHMAD",
-        "name": "Natural History Museum Abu Dhabi",
-        "map": "https://maps.app.goo.gl/jkDh6ZsuFBzSN1xU9"
+        "name": "Natural History Museum Abu Dhabi\n",
+        "map": "https://maps.app.goo.gl/jkDh6ZsuFBzSN1xU9",
+        "defaultAdditionalDetailsByMessageType": {
+          "announcement10": "🧘 Suitable for all levels\n🧘 Bring your own yoga mat\n📍 Meeting Point: Atrium: Beneath the Sauropods\n\n🎟️ Registration required + ⚠️ valid same-day museum admission ticket.",
+          "announcement2": "🧘 Suitable for all levels\n🧘 Bring your own yoga mat\n📍 Meeting Point: Atrium: Beneath the Sauropods\n\n🎟️ Registration required + ⚠️ valid same-day museum admission ticket.",
+          "personalReminder": "Meeting Point: Atrium, Beneath the Sauropods 🦕✨\n\nA few things to keep in mind:\n\n* The session is suitable for all levels.\n* Please bring your own yoga mat.\n* You’ll need a valid Natural History Museum Abu Dhabi admission ticket for {{eventDate}}. We recommend purchasing it in advance and having it ready at check-in.\n* Please arrive 10–15 minutes early so you have time to settle in before we begin.\n\nIf you have any questions, feel free to reach out to us on 058 279 1010.\n\nWe’re looking forward to sharing this beautiful morning practice with you, surrounded by the wonders of our natural world. 🌿🧘‍♀️🦕🤍"
+        }
       },
       "custom": {
-        "label": "Other location"
+        "label": "Other location",
+        "defaultAdditionalDetails": ""
       }
     },
     "messageDetails": [
@@ -89,7 +267,7 @@
       "📍 {{location}}"
     ],
     "reservationPrompt": "🔗 Reserve your spot here:",
-    "defaultSignature": "From Sundar & Elena"
+    "defaultSignature": "From Open Circle"
   },
   "events": [
     {
@@ -98,7 +276,8 @@
       "location": "Al Khatam Desert",
       "time": "5:00 PM",
       "link": "desert-cacao-ceremony",
-      "facilitator": "Sundar & Elena"
+      "facilitator": "Sundar & Elena",
+      "templateId": "fullMoonCacao"
     },
     {
       "name": "Sound Healing Experience",
@@ -106,7 +285,8 @@
       "location": "NHMAD",
       "time": "8:00 PM",
       "link": "sound-meditation",
-      "facilitator": "Elena"
+      "facilitator": "Elena",
+      "templateId": "nhmadSoundHealing"
     },
     {
       "name": "Morning Yoga Flow",
@@ -114,7 +294,8 @@
       "location": "NHMAD",
       "time": "8:00 AM",
       "link": "morning-yoga-flow",
-      "facilitator": "Elena"
+      "facilitator": "Elena",
+      "templateId": "nhmadMorningYoga"
     },
     {
       "name": "New Moon | Conscious Movement & Dance",
@@ -138,7 +319,8 @@
       "location": "NHMAD",
       "time": "7:00 PM",
       "link": "sound-meditation-nhmad",
-      "facilitator": "Elena"
+      "facilitator": "Elena",
+      "templateId": "nhmadSoundHealing"
     }
   ],
   "companies": [

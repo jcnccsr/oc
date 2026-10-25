@@ -7,12 +7,27 @@ export const titleIcons = calendar.titleIcons;
 export const titleOptions = calendar.titleOptions;
 export const locationOptions = calendar.locations;
 
-function getDefaultTitle(messageType) {
-  const option = titleOptions.find((item) => item.defaultFor === messageType);
-  if (!option) {
-    throw new Error(`Missing default message title for: ${messageType}`);
+function formatDateInput(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function getEventDate(value) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    throw new Error(`Invalid event date: ${value}`);
   }
-  return option.value;
+  const [year, month, day] = value.split("-").map(Number);
+  const date = new Date(year, month - 1, day);
+  if (formatDateInput(date) !== value) {
+    throw new Error(`Invalid event date: ${value}`);
+  }
+  return date;
+}
+
+function interpolate(template, values) {
+  return template.replace(/\{\{(\w+)\}\}/g, (_, key) => values[key] ?? "");
 }
 
 export function getEventHref(link) {
@@ -23,96 +38,105 @@ export function getEventHref(link) {
 }
 
 export function isValidEventDate(value) {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
-  const [year, month, day] = value.split("-").map(Number);
-  return formatDateInput(new Date(year, month - 1, day)) === value;
+  try {
+    getEventDate(value);
+    return true;
+  } catch {
+    return false;
+  }
 }
 
-export function getMessageDraft(event, messageType) {
+function getFallbackTemplate(event, messageType) {
   const type = messageTypes.find((item) => item.key === messageType);
   if (!type) {
     throw new Error(`Unknown event message type: ${messageType}`);
   }
-
-  const [year, month, day] = event.date.split("-").map(Number);
-  const date = new Date(year, month - 1, day);
-  if (formatDateInput(date) !== event.date) {
-    throw new Error(`Invalid event date: ${event.date}`);
+  const titleOption = titleOptions.find((item) => item.defaultFor === messageType);
+  if (!titleOption) {
+    throw new Error(`Missing default message title for: ${messageType}`);
   }
-  const weekday = new Intl.DateTimeFormat("en", { weekday: "long" }).format(date);
-  const message = type.defaultMessage
-    .replaceAll("{{name}}", event.name)
-    .replaceAll("{{weekday}}", weekday);
+  const locationType = Object.hasOwn(locationOptions, event.location)
+    ? event.location
+    : "custom";
+  const location = locationOptions[locationType];
 
   return {
-    icon: type.defaultIcon,
-    title: getDefaultTitle(messageType),
-    message,
-    name: event.name,
-    date: event.date,
-    time: event.time,
-    locationType: Object.hasOwn(locationOptions, event.location) ? event.location : "custom",
-    location: event.location,
-    additionalDetails: event.details ?? "",
-    link: getEventHref(event.link),
+    title: titleOption.value,
+    details: calendar.messageDetails.join("\n"),
+    additionalMessage: type.defaultMessage,
     signature: event.facilitator
       ? `From ${event.facilitator}`
       : calendar.defaultSignature,
+    locationType,
+    additionalLocationDetails:
+      location.defaultAdditionalDetailsByMessageType?.[messageType]
+      ?? location.defaultAdditionalDetails
+      ?? "",
   };
 }
 
-export function generateEventMessage(messageType, fields) {
+export function generateEventMessage(messageType, event) {
+  const date = getEventDate(event.date);
   const type = messageTypes.find((item) => item.key === messageType);
   if (!type) {
     throw new Error(`Unknown event message type: ${messageType}`);
   }
-
-  const [year, month, day] = fields.date.split("-").map(Number);
-  const date = new Date(year, month - 1, day);
-  if (formatDateInput(date) !== fields.date) {
-    throw new Error(`Invalid event date: ${fields.date}`);
-  }
+  const locationType = Object.hasOwn(locationOptions, event.location)
+    ? event.location
+    : "custom";
+  const location = locationOptions[locationType];
+  const eventTemplate = event.templateId
+    ? calendar.eventTemplates[event.templateId]
+    : null;
+  const template = eventTemplate?.messages?.[messageType]
+    ?? getFallbackTemplate(event, messageType);
   const formattedDate = new Intl.DateTimeFormat("en", {
     weekday: "long",
     month: "long",
     day: "numeric",
+    year: "numeric",
   }).format(date);
-  const location = locationOptions[fields.locationType];
-  if (!location) {
-    throw new Error(`Unknown event location type: ${fields.locationType}`);
-  }
-  const locationName = fields.locationType === "custom" ? fields.location : location.name;
-  const href = getEventHref(fields.link);
-  const replacements = {
-    name: fields.name.trim(),
+  const dateWithoutYear = new Intl.DateTimeFormat("en", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+  }).format(date);
+  const locationName = locationType === "custom" ? event.location : location.name;
+  const eventHref = getEventHref(event.link);
+  const values = {
+    name: event.name,
     date: formattedDate,
-    time: fields.time.trim(),
+    shortDate: dateWithoutYear,
+    weekday: new Intl.DateTimeFormat("en", { weekday: "long" }).format(date),
+    time: event.time,
     location: locationName.trim(),
+    map: location.map ?? "",
+    link: eventHref,
+    facilitator: event.facilitator || calendar.defaultSignature.replace(/^From\s+/, ""),
   };
-  const details = calendar.messageDetails
-    .map((line) => line.replace(/\{\{(\w+)\}\}/g, (_, key) => replacements[key] ?? ""))
-    .concat(location.map ?? "", fields.additionalDetails.trim())
-    .filter(Boolean);
-  const title = [fields.icon, fields.title.trim()].filter(Boolean).join(" ");
+  const details = interpolate(template.details, values).replace(/\n{3,}/g, "\n\n").trim();
+  const additionalMessage = interpolate(template.additionalMessage, values).trim();
+  const extraLocationDetails = template.additionalLocationDetails
+    ? interpolate(template.additionalLocationDetails, values).trim()
+    : "";
+  const signature = interpolate(template.signature, values).trim();
+  const sections = [
+    interpolate(template.title, values).trim(),
+    additionalMessage,
+    [details, extraLocationDetails].filter(Boolean).join("\n\n"),
+  ].filter(Boolean);
 
-  return [
-    title,
-    "",
-    fields.message.trim(),
-    "",
-    details.join("\n"),
-    "",
-    calendar.reservationPrompt,
-    "",
-    href,
-    "",
-    fields.signature.trim(),
-  ].join("\n");
+  if (messageType !== "personalReminder") {
+    sections.push(calendar.reservationPrompt, eventHref);
+  }
+
+  if (signature) {
+    sections.push(signature);
+  }
+
+  return sections.join("\n\n");
 }
 
-function formatDateInput(date) {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
+export function getMessageDraft(event, messageType) {
+  return generateEventMessage(messageType, event);
 }

@@ -130,94 +130,47 @@
   background: var(--hue-sauge);
 }
 
-.form {
+.messageField {
   display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.form label,
-.previewLabel {
-  display: flex;
-  flex: 1;
   flex-direction: column;
   gap: 0.25rem;
   font-size: 0.8rem;
   font-weight: 600;
 }
 
-.fieldRow {
+.iconPicker {
   display: flex;
-  gap: 0.75rem;
-}
-
-.iconSelect {
-  flex: 0 0 2.65rem;
-  width: 2.65rem !important;
-  height: 2.65rem;
-  align-self: flex-end;
-  appearance: none;
-  -webkit-appearance: none;
-  padding: 0 !important;
-  text-align: center;
-  text-align-last: center;
-  font-size: 1.2rem !important;
-}
-
-.titleField {
-  display: flex;
-  flex: 1;
   flex-direction: column;
-  min-width: 0;
-  gap: 0.25rem;
-}
-
-.titleField > label {
+  gap: 0.4rem;
   font-size: 0.8rem;
   font-weight: 600;
 }
 
-.titleInputWrapper {
-  position: relative;
-}
-
-.titleInputWrapper input {
-  min-height: 2.65rem;
-}
-
-.titleOptions {
-  position: absolute;
-  z-index: 1;
-  top: calc(100% + 0.25rem);
-  right: 0;
-  left: 0;
+.iconPicker > div {
   display: flex;
-  flex-direction: column;
-  padding: 0.25rem;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.iconPicker button {
+  min-width: 2rem;
+  min-height: 2rem;
+  padding: 0.2rem;
   border: 1px solid color-mix(in srgb, var(--foreground) 22%, transparent);
   border-radius: 0.2rem;
   background: var(--background);
-  box-shadow: 0 0.5rem 1.5rem color-mix(in srgb, var(--foreground) 16%, transparent);
+  font-size: 1.1rem;
 }
 
-.titleOptions button {
-  padding: 0.55rem 0.6rem;
-  border: 0;
-  color: var(--foreground);
-  background: var(--background);
-  text-align: left;
-  font-size: 0.85rem;
+.iconPicker button:hover,
+.iconPicker button:focus-visible {
+  border-color: var(--hue-rouge);
+  background: color-mix(in srgb, var(--hue-rouge) 12%, var(--background));
+  outline: 2px solid var(--hue-rouge);
+  outline-offset: 1px;
 }
 
-.titleOptions button:hover,
-.titleOptions button:focus-visible {
-  background: var(--hue-sauge);
-  outline: none;
-}
-
-.form input,
-.form textarea,
-.form select,
+.messageField textarea,
 .preview {
   width: 100%;
   padding: 0.6rem;
@@ -230,26 +183,14 @@
   font-weight: 400;
 }
 
-.form input:focus-visible,
-.form textarea:focus-visible,
-.form select:focus-visible,
+.messageField textarea:focus-visible,
 .preview:focus-visible {
   border-color: var(--hue-rouge);
   outline: 2px solid var(--hue-rouge);
   outline-offset: 1px;
 }
 
-.validationMessage {
-  padding: 0.6rem;
-  border: 1px solid color-mix(in srgb, var(--foreground) 22%, transparent);
-  border-radius: 0.2rem;
-  color: var(--hue-rouge);
-  font-size: 0.8rem;
-  font-weight: 400;
-}
-
-.form textarea,
-.preview {
+.messageField textarea {
   resize: vertical;
 }
 
@@ -291,10 +232,4 @@
 .copyButton:disabled {
   cursor: not-allowed;
   opacity: 0.5;
-}
-
-@media (max-width: 480px) {
-  .fieldRow {
-    flex-direction: column;
-  }
 }

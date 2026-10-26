@@ -1,6 +1,6 @@
 {
 	"website": {
-		"name": "OC Workbench",
+		"name": "OCDesk | @jcnccsr",
 		"description": "An app for making and managing tasks at OC.",
 		"url": "https://oc.jccesar.com",
 		"language": "en",
@@ -20,7 +20,7 @@
 		"linkedin": ""
 	},
 	"seo": {
-		"titleTemplate": "%s | OC Workbench",
+		"titleTemplate": "%s | OCDesk",
 		"defaultTitle": "OC Workbench",
 		"defaultDescription": "An app for making and managing tasks at OC."
 	}

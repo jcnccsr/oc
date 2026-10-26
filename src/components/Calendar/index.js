@@ -90,6 +90,10 @@ function CalendarMonth({ month, itemsByDate, isCurrentMonth }) {
   const startDay = contents.calendar.weekStartsOn % 7;
   const startOffset = (firstDay.getDay() - startDay + 7) % 7;
   const daysInMonth = new Date(month.getFullYear(), month.getMonth() + 1, 0).getDate();
+  const monthPrefix = `${month.getFullYear()}-${String(month.getMonth() + 1).padStart(2, "0")}-`;
+  const hasRelevantDates = Array.from(itemsByDate.keys()).some((key) =>
+    key.startsWith(monthPrefix),
+  );
   const cellCount = Math.ceil((startOffset + daysInMonth) / 7) * 7;
   const days = Array.from({ length: cellCount }, (_, index) => {
     const day = index - startOffset + 1;
@@ -100,7 +104,10 @@ function CalendarMonth({ month, itemsByDate, isCurrentMonth }) {
   const label = new Intl.DateTimeFormat("en", { month: "long", year: "numeric" }).format(month);
 
   return (
-    <section className={styles.month} aria-label={label}>
+    <section
+      className={`${styles.month} ${!hasRelevantDates ? styles.monthWithoutRelevantDates : ""}`}
+      aria-label={label}
+    >
       <h3 className={isCurrentMonth ? styles.currentMonthLabel : styles.monthLabel}>{label}</h3>
       <div className={styles.calendarGrid} role="grid" aria-label={`${label} calendar dates`}>
         {weekdays.map((weekday) => (

@@ -85,10 +85,11 @@ export function generateEventMessage(messageType, event) {
     ? event.location
     : "custom";
   const location = locationOptions[locationType];
-  const eventTemplate = event.templateId
-    ? calendar.eventTemplates[event.templateId]
-    : null;
-  const template = eventTemplate?.messages?.[messageType]
+  const eventType = event.eventType ? contents.eventTypes[event.eventType] : null;
+  if (event.eventType && !eventType) {
+    throw new Error(`Unknown event type: ${event.eventType}`);
+  }
+  const template = eventType?.messages?.[messageType]
     ?? getFallbackTemplate(event, messageType);
   const formattedDate = new Intl.DateTimeFormat("en", {
     weekday: "long",
@@ -101,12 +102,17 @@ export function generateEventMessage(messageType, event) {
     month: "long",
     day: "numeric",
   }).format(date);
+  const monthDay = new Intl.DateTimeFormat("en", {
+    month: "long",
+    day: "numeric",
+  }).format(date);
   const locationName = locationType === "custom" ? event.location : location.name;
   const eventHref = getEventHref(event.link);
   const values = {
-    name: event.name,
+    name: event.messageName ?? event.name,
     date: formattedDate,
     shortDate: dateWithoutYear,
+    monthDay,
     weekday: new Intl.DateTimeFormat("en", { weekday: "long" }).format(date),
     time: event.time,
     location: locationName.trim(),
@@ -114,6 +120,12 @@ export function generateEventMessage(messageType, event) {
     link: eventHref,
     facilitator: event.facilitator || calendar.defaultSignature.replace(/^From\s+/, ""),
   };
+  if (Array.isArray(template.body)) {
+    return interpolate(template.body.join("\n"), values).trim();
+  }
+  if (typeof template.body === "string") {
+    return interpolate(template.body, values).trim();
+  }
   const details = interpolate(template.details, values).replace(/\n{3,}/g, "\n\n").trim();
   const additionalMessage = interpolate(template.additionalMessage, values).trim();
   const extraLocationDetails = template.additionalLocationDetails

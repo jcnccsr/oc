@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import EventMessageComposer from "@/components/EventMessageComposer";
 import contents from "@/data/contents.json";
 import { getEventHref, messageTypes } from "@/utils/eventMessages";
@@ -68,7 +67,7 @@ function EventItem({ item }) {
     <div className={`${styles.eventItem} ${isEvent ? styles.eventItemMain : styles.eventItemReminder}`}>
       {isEvent ? (
         <>
-          <a className={styles.eventName} href={getEventHref(event.link)} target="_blank" rel="noreferrer">
+          <a className={styles.eventName} href={getEventHref(event.link, event.resourceType)} target="_blank" rel="noreferrer">
             {event.name}
           </a>
           <span>{event.time}</span>
@@ -90,10 +89,6 @@ function CalendarMonth({ month, itemsByDate, isCurrentMonth }) {
   const startDay = contents.calendar.weekStartsOn % 7;
   const startOffset = (firstDay.getDay() - startDay + 7) % 7;
   const daysInMonth = new Date(month.getFullYear(), month.getMonth() + 1, 0).getDate();
-  const monthPrefix = `${month.getFullYear()}-${String(month.getMonth() + 1).padStart(2, "0")}-`;
-  const hasRelevantDates = Array.from(itemsByDate.keys()).some((key) =>
-    key.startsWith(monthPrefix),
-  );
   const cellCount = Math.ceil((startOffset + daysInMonth) / 7) * 7;
   const days = Array.from({ length: cellCount }, (_, index) => {
     const day = index - startOffset + 1;
@@ -104,10 +99,7 @@ function CalendarMonth({ month, itemsByDate, isCurrentMonth }) {
   const label = new Intl.DateTimeFormat("en", { month: "long", year: "numeric" }).format(month);
 
   return (
-    <section
-      className={`${styles.month} ${!hasRelevantDates ? styles.monthWithoutRelevantDates : ""}`}
-      aria-label={label}
-    >
+    <section className={styles.month} aria-label={label}>
       <h3 className={isCurrentMonth ? styles.currentMonthLabel : styles.monthLabel}>{label}</h3>
       <div className={styles.calendarGrid} role="grid" aria-label={`${label} calendar dates`}>
         {weekdays.map((weekday) => (
@@ -159,18 +151,18 @@ function CalendarMonth({ month, itemsByDate, isCurrentMonth }) {
 }
 
 export default function Calendar() {
-  const [month, setMonth] = useState(() => {
-    const today = new Date();
-    return new Date(today.getFullYear(), today.getMonth(), 1);
+  const today = new Date();
+  const year = today.getFullYear();
+  const calendarEntries = [
+    ...contents.events.map((event) => ({ ...event, resourceType: "event" })),
+    ...contents.retreats.map((retreat) => ({ ...retreat, resourceType: "retreat" })),
+  ];
+  const itemsByDate = getCalendarItems(calendarEntries);
+  const months = Array.from({ length: 12 }, (_, index) => new Date(year, index, 1)).filter((month) => {
+    const monthPrefix = `${year}-${String(month.getMonth() + 1).padStart(2, "0")}-`;
+    return Array.from(itemsByDate.keys()).some((key) => key.startsWith(monthPrefix));
   });
-  const itemsByDate = getCalendarItems(contents.events);
-  const label = new Intl.DateTimeFormat("en", { month: "long", year: "numeric" }).format(month);
-  const months = [-1, 0, 1].map((offset) => new Date(month.getFullYear(), month.getMonth() + offset, 1));
   const { title, eyebrow, emptyMessage } = contents.calendar;
-
-  function changeMonth(offset) {
-    setMonth((current) => new Date(current.getFullYear(), current.getMonth() + offset, 1));
-  }
 
   return (
     <main className={styles.main}>
@@ -180,28 +172,22 @@ export default function Calendar() {
             <p className={styles.eyebrow}>{eyebrow}</p>
             <h2>{title}</h2>
           </div>
-          <div className={styles.monthControls}>
-            <button type="button" onClick={() => changeMonth(-1)} aria-label="Previous month">
-              &larr;
-            </button>
-            <h3 aria-live="polite">{label}</h3>
-            <button type="button" onClick={() => changeMonth(1)} aria-label="Next month">
-              &rarr;
-            </button>
-          </div>
         </div>
 
         <div className={styles.months}>
-          {months.map((visibleMonth, index) => (
+          {months.map((visibleMonth) => (
             <CalendarMonth
               key={dateKey(visibleMonth)}
               month={visibleMonth}
               itemsByDate={itemsByDate}
-              isCurrentMonth={index === 1}
+              isCurrentMonth={
+                visibleMonth.getFullYear() === today.getFullYear()
+                && visibleMonth.getMonth() === today.getMonth()
+              }
             />
           ))}
         </div>
-        {contents.events.length === 0 && (
+        {months.length === 0 && (
           <p className={styles.emptyState}>{emptyMessage}</p>
         )}
       </section>

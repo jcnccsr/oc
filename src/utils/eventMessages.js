@@ -1,7 +1,6 @@
 import contents from "@/data/contents.json";
 
 const calendar = contents.calendar;
-const eventUrl = calendar.eventUrl;
 export const messageTypes = calendar.messageTypes;
 export const titleIcons = calendar.titleIcons;
 export const titleOptions = calendar.titleOptions;
@@ -30,11 +29,13 @@ function interpolate(template, values) {
   return template.replace(/\{\{(\w+)\}\}/g, (_, key) => values[key] ?? "");
 }
 
-export function getEventHref(link) {
+export function getEventHref(link, resourceType = "event") {
+  const route = resourceType === "retreat" ? calendar.retreatUrl : calendar.eventUrl;
   const path = link
-    .replace(/^https:\/\/www\.opencircleyoga\.org\/event\//, "")
+    .replace(/^https:\/\/www\.opencircleyoga\.org\/(?:event|retreat)\//, "")
+    .replace(/^\/?(?:event|retreat)\//, "")
     .replace(/^\/+/, "");
-  return `${eventUrl}${path}`;
+  return `${route}${path}`;
 }
 
 export function isValidEventDate(value) {
@@ -107,7 +108,7 @@ export function generateEventMessage(messageType, event) {
     day: "numeric",
   }).format(date);
   const locationName = locationType === "custom" ? event.location : location.name;
-  const eventHref = getEventHref(event.link);
+  const eventHref = getEventHref(event.link, event.resourceType);
   const values = {
     name: event.messageName ?? event.name,
     date: formattedDate,

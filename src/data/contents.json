@@ -1,6 +1,7 @@
 {
   "calendar": {
     "eventUrl": "https://www.opencircleyoga.org/event/",
+    "retreatUrl": "https://www.opencircleyoga.org/retreat/",
     "title": "Events Calendar",
     "eyebrow": "Open Circle Yoga",
     "emptyMessage": "No events have been added yet.",
@@ -416,6 +417,16 @@
       "link": "sound-meditation-nhmad",
       "facilitator": "Elena",
       "eventType": "nhmadSoundHealing"
+    }
+  ],
+  "retreats": [
+    {
+      "name": "Yoga, Nature & Community Retreat to Oman",
+      "date": "2026-12-02",
+      "location": "Oman",
+      "time":"6:00 AM",
+      "link": "HikingYogaRetreatOman",
+      "facilitator": "Sundar & Elena"
     }
   ],
   "companies": [

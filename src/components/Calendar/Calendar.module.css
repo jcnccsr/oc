@@ -30,20 +30,6 @@
   line-height: 1.05;
 }
 
-.monthControls {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.monthControls h3 {
-  min-width: 11rem;
-  text-align: center;
-  font-family: var(--font-dm-sans), sans-serif;
-  font-size: 1.1rem;
-  font-weight: 600;
-}
-
 .months {
   display: grid;
   grid-template-columns: 1fr;
@@ -52,10 +38,6 @@
 
 .month {
   min-width: 0;
-}
-
-.monthWithoutRelevantDates {
-  display: none;
 }
 
 .monthLabel,
@@ -68,28 +50,6 @@
 
 .currentMonthLabel {
   color: var(--hue-rouge);
-}
-
-.monthControls button {
-  width: 2.5rem;
-  height: 2.5rem;
-  border: 1px solid color-mix(in srgb, var(--foreground) 24%, transparent);
-  border-radius: 0.3rem;
-  color: var(--foreground);
-  background: var(--background);
-  font-size: 1.25rem;
-  transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease;
-}
-
-.monthControls button:hover {
-  color: var(--foreground);
-  border-color: var(--hue-sauge);
-  background: var(--hue-sauge);
-}
-
-.monthControls button:focus-visible {
-  outline: 2px solid var(--hue-rouge);
-  outline-offset: 2px;
 }
 
 .calendarGrid {
@@ -208,15 +168,6 @@
   .calendarHeader {
     align-items: flex-start;
     flex-direction: column;
-  }
-
-  .monthControls {
-    width: 100%;
-    justify-content: space-between;
-  }
-
-  .monthControls h3 {
-    min-width: 0;
   }
 
   .calendarGrid {

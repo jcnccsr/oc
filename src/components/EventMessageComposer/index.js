@@ -54,7 +54,7 @@ export default function EventMessageComposer({ event, availableMessages }) {
   async function copyMessage() {
     try {
       await navigator.clipboard.writeText(generatedMessage);
-      setCopyStatus("Message copied.");
+      dialogRef.current?.close();
     } catch {
       setCopyStatus("Copy failed. Check clipboard permissions.");
     }

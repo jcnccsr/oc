@@ -69,10 +69,6 @@ function getFallbackTemplate(event, messageType) {
       ? `From ${event.facilitator}`
       : calendar.defaultSignature,
     locationType,
-    additionalLocationDetails:
-      location.defaultAdditionalDetailsByMessageType?.[messageType]
-      ?? location.defaultAdditionalDetails
-      ?? "",
   };
 }
 
@@ -129,14 +125,11 @@ export function generateEventMessage(messageType, event) {
   }
   const details = interpolate(template.details, values).replace(/\n{3,}/g, "\n\n").trim();
   const additionalMessage = interpolate(template.additionalMessage, values).trim();
-  const extraLocationDetails = template.additionalLocationDetails
-    ? interpolate(template.additionalLocationDetails, values).trim()
-    : "";
   const signature = interpolate(template.signature, values).trim();
   const sections = [
     interpolate(template.title, values).trim(),
     additionalMessage,
-    [details, extraLocationDetails].filter(Boolean).join("\n\n"),
+    details,
   ].filter(Boolean);
 
   if (messageType !== "personalReminder") {

@@ -397,7 +397,16 @@
       "location": "Studio",
       "time": "8:00 AM",
       "link": "morning-yoga-flow",
-      "facilitator": "Sundar and Saoussan",
+      "facilitator": "Saoussan & Sundar",
+      "eventType": "generalEvent"
+    },
+    {
+      "name": "Being A Man Today",
+      "date": "2026-11-14",
+      "location": "Studio",
+      "time": "12:00 PM",
+      "link": "being-a-man-today-a-one-day-experiential-workshop-for-men",
+      "facilitator": "Claudio & Sundar",
       "eventType": "generalEvent"
     },
     {

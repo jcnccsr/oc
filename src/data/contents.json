@@ -116,22 +116,15 @@
       "Studio": {
         "label": "Studio",
         "name": "Open Circle Yoga Studio",
-        "map": "https://maps.app.goo.gl/iLQmYwap9vKjbR3v5",
-        "defaultAdditionalDetails": ""
+        "map": "https://maps.app.goo.gl/iLQmYwap9vKjbR3v5"
       },
       "NHMAD": {
         "label": "NHMAD",
         "name": "Natural History Museum Abu Dhabi\n",
-        "map": "https://maps.app.goo.gl/jkDh6ZsuFBzSN1xU9",
-        "defaultAdditionalDetailsByMessageType": {
-          "announcement10": "🧘 Suitable for all levels\n🧘 Bring your own yoga mat\n📍 Meeting Point: Atrium: Beneath the Sauropods\n\n🎟️ Registration required + ⚠️ valid same-day museum admission ticket.",
-          "announcement2": "🧘 Suitable for all levels\n🧘 Bring your own yoga mat\n📍 Meeting Point: Atrium: Beneath the Sauropods\n\n🎟️ Registration required + ⚠️ valid same-day museum admission ticket.",
-          "personalReminder": "Meeting Point: Atrium, Beneath the Sauropods 🦕✨\n\nA few things to keep in mind:\n\n* The session is suitable for all levels.\n* Please bring your own yoga mat.\n* You’ll need a valid Natural History Museum Abu Dhabi admission ticket for {{eventDate}}. We recommend purchasing it in advance and having it ready at check-in.\n* Please arrive 10–15 minutes early so you have time to settle in before we begin.\n\nIf you have any questions, feel free to reach out to us on 058 279 1010.\n\nWe’re looking forward to sharing this beautiful morning practice with you, surrounded by the wonders of our natural world. 🌿🧘‍♀️🦕🤍"
-        }
+        "map": "https://maps.app.goo.gl/jkDh6ZsuFBzSN1xU9"
       },
       "custom": {
-        "label": "Other location",
-        "defaultAdditionalDetails": ""
+        "label": "Other location"
       }
     },
     "messageDetails": [
@@ -237,19 +230,8 @@
             "📍 Venue: {{location}}",
             "{{map}}",
             "",
-            "🧘 A few things to remember:",
-            "* Bring your own yoga mat. A blanket and eye mask are also recommended for extra comfort.",
-            "* A valid museum admission ticket for {{monthDay}} is required. We recommend purchasing it in advance.",
-            "* Please arrive 10–15 minutes early so you can settle in before we begin.",
-            "",
-            "We invite you to slow down, unwind, and let the soothing sounds guide you into a space of deep rest and relaxation. 🤍",
-            "",
-            "If you need any assistance, feel free to contact us at 058 279 1010.",
-            "",
-            "See you beneath the dinosaurs! 🙏🌿",
-            "",
-            "Warmly,",
-            "{{facilitator}}"
+            "🧘 A few things to remember:\n* Bring your own yoga mat. A blanket and eye mask are also recommended for extra comfort.\n* A valid museum admission ticket for {{monthDay}} is required. We recommend purchasing it in advance.\n* Please arrive 10–15 minutes early so you can settle in before we begin.\nWe invite you to slow down, unwind, and let the soothing sounds guide you into a space of deep rest and relaxation. 🤍\nIf you need any assistance, feel free to contact us at 058 279 1010.\nSee you beneath the dinosaurs! 🙏🌿\n",
+            "Warmly,\n{{facilitator}}"
           ]
         }
       }
@@ -373,16 +355,6 @@
   },
   "events": [
     {
-      "name": "Sound Healing Experience",
-      "messageName": "Sound Healing Experience Under the Dinosaurs",
-      "date": "2026-10-26",
-      "location": "NHMAD",
-      "time": "8:00-9:00 PM",
-      "link": "sound-meditation",
-      "facilitator": "Elena",
-      "eventType": "nhmadSoundHealing"
-    },
-    {
       "name": "Morning Yoga Flow",
       "date": "2026-11-03",
       "location": "NHMAD",
@@ -435,7 +407,8 @@
       "location": "Oman",
       "time":"6:00 AM",
       "link": "HikingYogaRetreatOman",
-      "facilitator": "Sundar & Elena"
+      "facilitator": "Sundar & Elena",
+      "eventType": "retreat"
     }
   ],
   "companies": [

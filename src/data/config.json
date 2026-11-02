@@ -14,11 +14,7 @@
     "website": "https://jccesar.com",
     "handle": "@jcnccsr"
 	},
-	"social": {
-		"twitter": "",
-		"instagram": "",
-		"linkedin": ""
-	},
+	"social": "jcnccsr",
 	"seo": {
 		"titleTemplate": "%s | OCDesk",
 		"defaultTitle": "OC Workbench",

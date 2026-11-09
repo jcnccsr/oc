@@ -84,7 +84,7 @@ function EventItem({ item }) {
   );
 }
 
-function CalendarMonth({ month, itemsByDate, isCurrentMonth }) {
+function CalendarMonth({ month, itemsByDate, isCurrentMonth, todayKey }) {
   const firstDay = new Date(month.getFullYear(), month.getMonth(), 1);
   const startDay = contents.calendar.weekStartsOn % 7;
   const startOffset = (firstDay.getDay() - startDay + 7) % 7;
@@ -120,17 +120,24 @@ function CalendarMonth({ month, itemsByDate, isCurrentMonth }) {
 
           const items = itemsByDate.get(dateKey(date)) ?? [];
           const relevant = items.length > 0;
+          const isToday = dateKey(date) === todayKey;
           const hasEvent = items.some((item) => item.kind === "event");
           const cellClassNames = [
             styles.day,
             !relevant && styles.irrelevant,
             relevant && (hasEvent ? styles.eventDay : styles.reminderDay),
+            isToday && styles.today,
           ]
             .filter(Boolean)
             .join(" ");
 
           return (
-            <div className={cellClassNames} role="gridcell" key={dateKey(date)}>
+            <div
+              className={cellClassNames}
+              role="gridcell"
+              aria-current={isToday ? "date" : undefined}
+              key={dateKey(date)}
+            >
               <div className={styles.dayHeading}>
                 <span className={styles.mobileWeekday}>
                   {new Intl.DateTimeFormat("en", { weekday: "short" }).format(date)}
@@ -180,6 +187,7 @@ export default function Calendar() {
               key={dateKey(visibleMonth)}
               month={visibleMonth}
               itemsByDate={itemsByDate}
+              todayKey={dateKey(today)}
               isCurrentMonth={
                 visibleMonth.getFullYear() === today.getFullYear()
                 && visibleMonth.getMonth() === today.getMonth()

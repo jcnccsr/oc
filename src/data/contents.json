@@ -27,12 +27,21 @@
         "daysBefore": 2,
         "label": "2 Days Before",
         "messageType": "announcement2"
+      },
+      {
+        "kind": "personal-message",
+        "daysBefore": 1,
+        "label": "Personal Message",
+        "messageType": "personalReminder"
+      },
+      {
+        "kind": "personal-invitation",
+        "daysBefore": 9,
+        "label": "Personal Invitation",
+        "messageType": "invitation"
       }
     ],
-    "eventMessageTypes": [
-      "invitation",
-      "personalReminder"
-    ],
+    "eventMessageTypes": [],
     "messageTypes": [
       {
         "key": "announcement10",

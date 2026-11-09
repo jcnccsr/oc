@@ -92,6 +92,13 @@
   border-left: 2px dashed var(--hue-rouge);
 }
 
+.today {
+  opacity: 1;
+  outline: 2px solid var(--hue-sauge);
+  outline-offset: -2px;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--hue-sauge) 28%, transparent);
+}
+
 .dayHeading {
   display: flex;
   align-items: baseline;

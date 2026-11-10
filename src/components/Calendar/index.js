@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import EventMessageComposer from "@/components/EventMessageComposer";
 import contents from "@/data/contents.json";
 import { getEventHref, messageTypes } from "@/utils/eventMessages";
@@ -158,17 +159,30 @@ function CalendarMonth({ month, itemsByDate, isCurrentMonth, todayKey }) {
 }
 
 export default function Calendar() {
-  const today = new Date();
-  const year = today.getFullYear();
+  const [today, setToday] = useState(null);
+  useEffect(() => {
+    setToday(new Date());
+  }, []);
+
   const calendarEntries = [
     ...contents.events.map((event) => ({ ...event, resourceType: "event" })),
     ...contents.retreats.map((retreat) => ({ ...retreat, resourceType: "retreat" })),
   ];
   const itemsByDate = getCalendarItems(calendarEntries);
-  const months = Array.from({ length: 12 }, (_, index) => new Date(year, index, 1)).filter((month) => {
-    const monthPrefix = `${year}-${String(month.getMonth() + 1).padStart(2, "0")}-`;
-    return Array.from(itemsByDate.keys()).some((key) => key.startsWith(monthPrefix));
-  });
+  const itemDates = Array.from(itemsByDate.keys());
+  const eventMonths = [...new Set(itemDates.map((key) => key.slice(0, 7)))]
+    .map((key) => {
+      const [year, month] = key.split("-").map(Number);
+      return new Date(year, month - 1, 1);
+    })
+    .sort((first, second) => first - second);
+  const months = today
+    ? Array.from({ length: 12 }, (_, index) => new Date(today.getFullYear(), index, 1)).filter((month) => {
+      const monthPrefix = `${dateKey(month).slice(0, 7)}-`;
+      const isCurrentMonth = month.getMonth() === today.getMonth();
+      return isCurrentMonth || itemDates.some((key) => key.startsWith(monthPrefix));
+    })
+    : eventMonths;
   const { title, eyebrow, emptyMessage } = contents.calendar;
 
   return (
@@ -187,9 +201,10 @@ export default function Calendar() {
               key={dateKey(visibleMonth)}
               month={visibleMonth}
               itemsByDate={itemsByDate}
-              todayKey={dateKey(today)}
+              todayKey={today ? dateKey(today) : undefined}
               isCurrentMonth={
-                visibleMonth.getFullYear() === today.getFullYear()
+                today !== null
+                && visibleMonth.getFullYear() === today.getFullYear()
                 && visibleMonth.getMonth() === today.getMonth()
               }
             />

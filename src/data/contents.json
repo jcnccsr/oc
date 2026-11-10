@@ -409,17 +409,7 @@
       "eventType": "nhmadSoundHealing"
     }
   ],
-  "retreats": [
-    {
-      "name": "Yoga, Nature & Community Retreat to Oman",
-      "date": "2026-12-02",
-      "location": "Oman",
-      "time":"6:00 AM",
-      "link": "HikingYogaRetreatOman",
-      "facilitator": "Sundar & Elena",
-      "eventType": "retreat"
-    }
-  ],
+  "retreats": [],
   "companies": [
     {
       "name": "Etisalat",

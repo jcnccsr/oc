@@ -2,7 +2,7 @@
   "calendar": {
     "eventUrl": "https://www.opencircleyoga.org/event/",
     "retreatUrl": "https://www.opencircleyoga.org/retreat/",
-    "title": "Events Calendar",
+    "title": "Events & Tasks Calendar",
     "eyebrow": "Open Circle Yoga",
     "emptyMessage": "No events have been added yet.",
     "weekStartsOn": 1,
@@ -410,6 +410,159 @@
     }
   ],
   "retreats": [],
+  "planner": {
+    "statuses": [
+      {
+        "value": "todo",
+        "label": "To do"
+      },
+      {
+        "value": "in-progress",
+        "label": "In progress"
+      },
+      {
+        "value": "completed",
+        "label": "Completed"
+      }
+    ],
+    "tasks": [
+      {
+        "id": "cacao-announcement10",
+        "title": "Create the Announcement10",
+        "description": "Message and short video.",
+        "details": "Post on WhatsApp groups and Instagram story.",
+        "dueDate": "2026-11-12",
+        "dueTime": "12:00",
+        "status": "completed"
+      },
+      {
+        "id": "cacao-announcement2",
+        "title": "2 Days Before Announcement for Sacred Desert Cacao Ceremony",
+        "description": "Compose a message to remind about the event.",
+        "details": "Include URL for registration and event details.",
+        "dueDate": "2026-11-19",
+        "dueTime": "12:00",
+        "status": "todo"
+      },
+      {
+        "id": "cacao-personalinvitation",
+        "title": "Create a Personal Invitation",
+        "description": "Compose a personalized invitation for each person.",
+        "details": "Personal invitation for Sacred Desert Cacao Ceremony to 30 people max.",
+        "dueDate": "2026-11-17",
+        "dueTime": "12:30",
+        "status": "in-progress"
+      },
+      {
+        "id": "cacao-personalmessage",
+        "title": "Create a Personal Message",
+        "description": "Send a personal message to each attendee.",
+        "details": "Personal message for Sacred Desert Cacao Ceremony for those who registered.",
+        "dueDate": "2026-11-20",
+        "dueTime": "09:00",
+        "status": "todo"
+      },
+      {
+        "id": "cacao-postmessage",
+        "title": "Create a Post-event Message",
+        "description": "Send a message to attendees after the event.",
+        "details": "Share highlights and thank you messages for Sacred Desert Cacao Ceremony.",
+        "dueDate": "2026-11-22",
+        "dueTime": "09:00",
+        "status": "todo"
+      },
+      {
+        "id": "being-announcement10",
+        "title": "Create an Announcement for Being a Man event",
+        "description": "Upload a video and photos of the event.",
+        "details": "Video and photos of the Being a Man event.",
+        "dueDate": "2026-11-09",
+        "dueTime": "12:00",
+        "status": "complete"
+      },
+      {
+        "id": "being-announcement2",
+        "title": "Create an urgent announcement for Being a Man event",
+        "description": "Upload a video and photos of the event.",
+        "details": "A Whatsapp message to remind about the event.",
+        "dueDate": "2026-11-12",
+        "dueTime": "12:00",
+        "status": "complete"
+      },
+      {
+        "id": "being-personalinvitation",
+        "title": "Create a Personal Invitation for Being a Man event",
+        "description": "Compose a personalized invitation for each person.",
+        "details": "Use the template provided.",
+        "dueDate": "2026-11-09",
+        "dueTime": "12:00",
+        "status": "complete"
+      },
+      {
+        "id": "being-personalmessage",
+        "title": "Create a Personal Message for Being a Man event",
+        "description": "Compose a personalized message for each person.",
+        "details": "Use the template provided.",
+        "dueDate": "2026-11-13",
+        "dueTime": "12:00",
+        "status": "complete"
+      },
+      {
+        "id": "being-posteevent",
+        "title": "Create Post-event Video",
+        "description": "Upload a video and photos of the last event.",
+        "details": "Video and photos of the Being a Man event.",
+        "dueDate": "2026-11-15",
+        "dueTime": "12:00",
+        "status": "complete"
+      },
+      {
+        "id": "sound-announcement10",
+        "title": "Send event reminder about Sound Meditation Experience",
+        "description": "Share the event reminder with registered guests.",
+        "details": "Compose a message to announce the event.",
+        "dueDate": "2026-11-14",
+        "dueTime": "10:00",
+        "status": "complete"
+      },
+      {
+        "id": "sound-announcement2",
+        "title": "10 Days Before Announcement for Sound Meditation Experience",
+        "description": "Compose a message to announce the event.",
+        "details": "Include URL for registration and event details.",
+        "dueDate": "2026-11-22",
+        "dueTime": "12:00",
+        "status": "todo"
+      },
+      {
+        "id": "cacao-personalinvitation",
+        "title": "Personal Invitation for Sacred Desert Cacao Ceremony",
+        "description": "Send a personal invitation to each attendee.",
+        "details": "Include URL for registration and event details.",
+        "dueDate": "2026-11-18",
+        "dueTime": "12:00",
+        "status": "todo"
+      },
+      {
+        "id": "sound-personalmessage",
+        "title": "Personal Message for Sacred Desert Cacao Ceremony",
+        "description": "Send a personal message to each attendee.",
+        "details": "Include URL for registration and event details.",
+        "dueDate": "2026-11-23",
+        "dueTime": "12:00",
+        "status": "todo"
+      },
+      {
+        "id": "sound-postevent",
+        "title": "Post-Event Message for Sound Meditation Experience",
+        "description": "Compose a personalized message for each participant.",
+        "details": "Include URL for registration and event details.",
+        "dueDate": "2026-11-25",
+        "dueTime": "12:00",
+        "status": "todo"
+      }
+    ]
+  },
   "companies": [
     {
       "name": "Etisalat",

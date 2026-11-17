@@ -7,6 +7,7 @@ import { getEventHref, messageTypes } from "@/utils/eventMessages";
 import styles from "./Calendar.module.css";
 
 const { weekdays, reminders, eventMessageTypes } = contents.calendar;
+const { statuses: taskStatuses, tasks } = contents.planner;
 
 function dateKey(date) {
   const year = date.getFullYear();
@@ -56,6 +57,56 @@ function getCalendarItems(events) {
   return itemsByDate;
 }
 
+function formatTaskDue(task) {
+  const [year, month, day] = task.dueDate.split("-").map(Number);
+  const date = new Date(year, month - 1, day);
+  const [hours, minutes] = task.dueTime.split(":").map(Number);
+  const time = new Intl.DateTimeFormat("en", {
+    hour: "numeric",
+    minute: "2-digit",
+  }).format(new Date(year, month - 1, day, hours, minutes));
+
+  return `${new Intl.DateTimeFormat("en", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  }).format(date)} at ${time}`;
+}
+
+function TaskDot({ task, isOpen, onToggle, tooltipAlignment, mobileTooltipAlignment }) {
+  const statusLabel = taskStatuses.find((status) => status.value === task.status)?.label
+    ?? task.status;
+  const tooltipId = `task-tooltip-${task.id}`;
+
+  return (
+    <span
+      className={`${styles.taskDotGroup} ${styles[tooltipAlignment]} ${styles[mobileTooltipAlignment]} ${isOpen ? styles.taskDotOpen : ""}`}
+    >
+      <button
+        className={`${styles.taskDot} ${styles[`taskStatus-${task.status}`] ?? ""}`}
+        type="button"
+        aria-label={`${task.title}, ${statusLabel}. Show task details.`}
+        aria-describedby={tooltipId}
+        aria-controls={tooltipId}
+        aria-expanded={isOpen}
+        onClick={onToggle}
+      >
+        {task.status === "completed" ? <span aria-hidden="true">✓</span> : null}
+      </button>
+      <span className={styles.taskTooltip} id={tooltipId} role="tooltip">
+        <span className={styles.taskTooltipStatus}>{statusLabel}</span>
+        <strong className={styles.taskTooltipTitle}>{task.title}</strong>
+        <span className={styles.taskTooltipDue}>{formatTaskDue(task)}</span>
+        <span className={styles.taskTooltipText}>{task.description}</span>
+        {task.details ? (
+          <span className={styles.taskTooltipDetails}>{task.details}</span>
+        ) : null}
+      </span>
+    </span>
+  );
+}
+
 function EventItem({ item }) {
   const { event, kind } = item;
   const isEvent = kind === "event";
@@ -85,7 +136,15 @@ function EventItem({ item }) {
   );
 }
 
-function CalendarMonth({ month, itemsByDate, isCurrentMonth, todayKey }) {
+function CalendarMonth({
+  month,
+  itemsByDate,
+  tasksByDate,
+  openTaskId,
+  onToggleTask,
+  isCurrentMonth,
+  todayKey,
+}) {
   const firstDay = new Date(month.getFullYear(), month.getMonth(), 1);
   const startDay = contents.calendar.weekStartsOn % 7;
   const startOffset = (firstDay.getDay() - startDay + 7) % 7;
@@ -120,13 +179,18 @@ function CalendarMonth({ month, itemsByDate, isCurrentMonth, todayKey }) {
           }
 
           const items = itemsByDate.get(dateKey(date)) ?? [];
-          const relevant = items.length > 0;
+          const dayTasks = tasksByDate.get(dateKey(date)) ?? [];
+          const relevant = items.length > 0 || dayTasks.length > 0;
           const isToday = dateKey(date) === todayKey;
+          const column = index % 7;
           const hasEvent = items.some((item) => item.kind === "event");
+          const hasReminder = items.some((item) => item.kind !== "event");
           const cellClassNames = [
             styles.day,
             !relevant && styles.irrelevant,
-            relevant && (hasEvent ? styles.eventDay : styles.reminderDay),
+            hasEvent && styles.eventDay,
+            !hasEvent && hasReminder && styles.reminderDay,
+            !hasEvent && !hasReminder && dayTasks.length > 0 && styles.taskDay,
             isToday && styles.today,
           ]
             .filter(Boolean)
@@ -145,10 +209,38 @@ function CalendarMonth({ month, itemsByDate, isCurrentMonth, todayKey }) {
                 </span>
                 <time dateTime={dateKey(date)}>{date.getDate()}</time>
               </div>
-              <div className={styles.dayItems}>
-                {items.map((item, index) => (
-                  <EventItem item={item} key={`${item.event.name}-${item.kind}-${index}`} />
-                ))}
+              <div
+                className={`${styles.dayContent} ${dayTasks.length ? styles.dayContentWithTasks : ""}`}
+              >
+                <div className={styles.dayItems}>
+                  {items.map((item, index) => (
+                    <EventItem item={item} key={`${item.event.name}-${item.kind}-${index}`} />
+                  ))}
+                </div>
+                {dayTasks.length > 0 ? (
+                  <div
+                    className={styles.taskDotColumn}
+                    role="group"
+                    aria-label={`${dayTasks.length} tasks`}
+                  >
+                    {dayTasks.map((task) => (
+                      <TaskDot
+                        key={task.id}
+                        task={task}
+                        isOpen={openTaskId === task.id}
+                        tooltipAlignment={column < 3 ? "taskTooltipRight" : "taskTooltipLeft"}
+                        mobileTooltipAlignment={
+                          date.getDate() % 2 === 1
+                            ? "mobileTooltipRight"
+                            : "mobileTooltipLeft"
+                        }
+                        onToggle={() =>
+                          onToggleTask(openTaskId === task.id ? null : task.id)
+                        }
+                      />
+                    ))}
+                  </div>
+                ) : null}
               </div>
             </div>
           );
@@ -160,6 +252,7 @@ function CalendarMonth({ month, itemsByDate, isCurrentMonth, todayKey }) {
 
 export default function Calendar() {
   const [today, setToday] = useState(null);
+  const [openTaskId, setOpenTaskId] = useState(null);
   useEffect(() => {
     setToday(new Date());
   }, []);
@@ -169,20 +262,23 @@ export default function Calendar() {
     ...contents.retreats.map((retreat) => ({ ...retreat, resourceType: "retreat" })),
   ];
   const itemsByDate = getCalendarItems(calendarEntries);
-  const itemDates = Array.from(itemsByDate.keys());
-  const eventMonths = [...new Set(itemDates.map((key) => key.slice(0, 7)))]
+  const tasksByDate = new Map();
+  tasks.forEach((task) => {
+    const dailyTasks = tasksByDate.get(task.dueDate) ?? [];
+    dailyTasks.push(task);
+    tasksByDate.set(task.dueDate, dailyTasks);
+  });
+  const itemDates = [...itemsByDate.keys(), ...tasksByDate.keys()];
+  const monthKeys = new Set(itemDates.map((key) => key.slice(0, 7)));
+  if (today) {
+    monthKeys.add(dateKey(today).slice(0, 7));
+  }
+  const months = [...monthKeys]
     .map((key) => {
       const [year, month] = key.split("-").map(Number);
       return new Date(year, month - 1, 1);
     })
     .sort((first, second) => first - second);
-  const months = today
-    ? Array.from({ length: 12 }, (_, index) => new Date(today.getFullYear(), index, 1)).filter((month) => {
-      const monthPrefix = `${dateKey(month).slice(0, 7)}-`;
-      const isCurrentMonth = month.getMonth() === today.getMonth();
-      return isCurrentMonth || itemDates.some((key) => key.startsWith(monthPrefix));
-    })
-    : eventMonths;
   const { title, eyebrow, emptyMessage } = contents.calendar;
 
   return (
@@ -201,6 +297,9 @@ export default function Calendar() {
               key={dateKey(visibleMonth)}
               month={visibleMonth}
               itemsByDate={itemsByDate}
+              tasksByDate={tasksByDate}
+              openTaskId={openTaskId}
+              onToggleTask={setOpenTaskId}
               todayKey={today ? dateKey(today) : undefined}
               isCurrentMonth={
                 today !== null
@@ -210,6 +309,19 @@ export default function Calendar() {
             />
           ))}
         </div>
+        {tasks.length > 0 ? (
+          <ul className={styles.taskLegend} aria-label="Task status legend">
+            {taskStatuses.map((status) => (
+              <li key={status.value}>
+                <span
+                  className={`${styles.taskLegendDot} ${styles[`taskStatus-${status.value}`] ?? ""}`}
+                  aria-hidden="true"
+                />
+                {status.label}
+              </li>
+            ))}
+          </ul>
+        ) : null}
         {months.length === 0 && (
           <p className={styles.emptyState}>{emptyMessage}</p>
         )}

@@ -439,10 +439,10 @@
         "id": "cacao-announcement2",
         "title": "2 Days Before Announcement for Sacred Desert Cacao Ceremony",
         "description": "Compose a message to remind about the event.",
-        "details": "Include URL for registration and event details.",
+        "details": "Include a short video and the URL for registration and event details.",
         "dueDate": "2026-11-19",
-        "dueTime": "12:00",
-        "status": "todo"
+        "dueTime": "15:00",
+        "status": "in-progress"
       },
       {
         "id": "cacao-personalinvitation",
@@ -451,7 +451,7 @@
         "details": "Personal invitation for Sacred Desert Cacao Ceremony to 30 people max.",
         "dueDate": "2026-11-17",
         "dueTime": "12:30",
-        "status": "in-progress"
+        "status": "completed"
       },
       {
         "id": "cacao-personalmessage",
@@ -472,13 +472,22 @@
         "status": "todo"
       },
       {
+        "id": "cacao-carpooling",
+        "title": "Organize Carpooling for Sacred Desert Cacao Ceremony",
+        "description": "Coordinate transportation for attendees.",
+        "details": "Arrange rideshare options for the Sacred Desert Cacao Ceremony.",
+        "dueDate": "2026-11-18",
+        "dueTime": "09:00",
+        "status": "in-progress"
+      },
+      {
         "id": "being-announcement10",
         "title": "Create an Announcement for Being a Man event",
         "description": "Upload a video and photos of the event.",
         "details": "Video and photos of the Being a Man event.",
         "dueDate": "2026-11-09",
         "dueTime": "12:00",
-        "status": "complete"
+        "status": "completed"
       },
       {
         "id": "being-announcement2",
@@ -487,7 +496,7 @@
         "details": "A Whatsapp message to remind about the event.",
         "dueDate": "2026-11-12",
         "dueTime": "12:00",
-        "status": "complete"
+        "status": "completed"
       },
       {
         "id": "being-personalinvitation",
@@ -496,7 +505,7 @@
         "details": "Use the template provided.",
         "dueDate": "2026-11-09",
         "dueTime": "12:00",
-        "status": "complete"
+        "status": "completed"
       },
       {
         "id": "being-personalmessage",
@@ -505,7 +514,7 @@
         "details": "Use the template provided.",
         "dueDate": "2026-11-13",
         "dueTime": "12:00",
-        "status": "complete"
+        "status": "completed"
       },
       {
         "id": "being-posteevent",
@@ -514,7 +523,7 @@
         "details": "Video and photos of the Being a Man event.",
         "dueDate": "2026-11-15",
         "dueTime": "12:00",
-        "status": "complete"
+        "status": "completed"
       },
       {
         "id": "sound-announcement10",
@@ -523,11 +532,11 @@
         "details": "Compose a message to announce the event.",
         "dueDate": "2026-11-14",
         "dueTime": "10:00",
-        "status": "complete"
+        "status": "completed"
       },
       {
         "id": "sound-announcement2",
-        "title": "10 Days Before Announcement for Sound Meditation Experience",
+        "title": "2 Days Before Announcement for Sound Meditation Experience",
         "description": "Compose a message to announce the event.",
         "details": "Include URL for registration and event details.",
         "dueDate": "2026-11-22",
@@ -535,8 +544,8 @@
         "status": "todo"
       },
       {
-        "id": "cacao-personalinvitation",
-        "title": "Personal Invitation for Sacred Desert Cacao Ceremony",
+        "id": "sound-personalinvitation",
+        "title": "Personal Invitation for Sound Meditation Experience",
         "description": "Send a personal invitation to each attendee.",
         "details": "Include URL for registration and event details.",
         "dueDate": "2026-11-18",
@@ -545,9 +554,9 @@
       },
       {
         "id": "sound-personalmessage",
-        "title": "Personal Message for Sacred Desert Cacao Ceremony",
+        "title": "Personal Message for Sound Meditation Experience",
         "description": "Send a personal message to each attendee.",
-        "details": "Include URL for registration and event details.",
+        "details": "Include the address and event details.",
         "dueDate": "2026-11-23",
         "dueTime": "12:00",
         "status": "todo"
